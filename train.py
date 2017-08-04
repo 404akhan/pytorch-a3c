@@ -49,6 +49,7 @@ def train(rank, args, shared_model, optimizer=None):
         rewards = []
         is_aux_actions = []
         entropies = []
+        prev_action = 0 # NOOP
 
         for step in range(args.num_steps):
             value, logit = model(Variable( state.unsqueeze(0) ))
@@ -70,7 +71,7 @@ def train(rank, args, shared_model, optimizer=None):
                 state = state.numpy()
                 reward = 0.
                 for _ in range(action_np - model.n_real_acts + 1):
-                    state_new, rew, done, _ = env.step(np.random.randint(model.n_real_acts))
+                    state_new, rew, done, _ = env.step(prev_action)
                     state = np.append(state[1:,:,:], state_new, axis=0) 
                     done = done or episode_length >= args.max_episode_length
                     rew = max(min(rew, 1), -1)
@@ -78,6 +79,7 @@ def train(rank, args, shared_model, optimizer=None):
                     reward += rew
                     if done:
                         break
+            prev_action = action_np
 
             if done:
                 episode_length = 0
