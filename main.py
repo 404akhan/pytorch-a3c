@@ -29,6 +29,8 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
                     help='random seed (default: 1)')
 parser.add_argument('--num-processes', type=int, default=4, metavar='N',
                     help='how many training processes to use (default: 4)')
+parser.add_argument('--num-skips', type=int, default=3, metavar='SKIP',
+                    help='how many frame skip allowed')
 parser.add_argument('--num-steps', type=int, default=20, metavar='NS',
                     help='number of forward steps in A3C (default: 20)')
 parser.add_argument('--max-episode-length', type=int, default=10000, metavar='M',
@@ -43,12 +45,13 @@ if __name__ == '__main__':
     os.environ['OMP_NUM_THREADS'] = '1'  
   
     args = parser.parse_args()
+    print(args)
 
     torch.manual_seed(args.seed)
 
     env = create_atari_env(args.env_name)
     shared_model = ActorCritic(
-        env.observation_space.shape[0], env.action_space)
+        env.observation_space.shape[0], env.action_space, args.num_skips)
     shared_model.share_memory()
 
     if args.no_shared:
