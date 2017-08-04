@@ -12,6 +12,7 @@ from torchvision import datasets, transforms
 import time
 from collections import deque
 
+import numpy as np 
 
 def test(rank, args, shared_model):
     torch.manual_seed(args.seed + rank)
@@ -24,6 +25,7 @@ def test(rank, args, shared_model):
     model.eval()
 
     state = env.reset()
+    state = np.concatenate([state] * 4, axis=0)
     state = torch.from_numpy(state)
     reward_sum = 0
     done = True
@@ -49,7 +51,8 @@ def test(rank, args, shared_model):
         prob = F.softmax(logit)
         action = prob.max(1)[1].data.numpy()
 
-        state, reward, done, _ = env.step(action[0, 0])
+        state_new, reward, done, _ = env.step(action[0, 0])
+        state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
         done = done or episode_length >= args.max_episode_length
         reward_sum += reward
 
@@ -67,6 +70,7 @@ def test(rank, args, shared_model):
             episode_length = 0
             actions.clear()
             state = env.reset()
+            state = np.concatenate([state] * 4, axis=0)
             time.sleep(60)
 
         state = torch.from_numpy(state)

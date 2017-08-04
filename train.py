@@ -10,6 +10,8 @@ from model import ActorCritic
 from torch.autograd import Variable
 from torchvision import datasets, transforms
 
+import matplotlib.pyplot as plt 
+import numpy as np 
 
 def ensure_shared_grads(model, shared_model):
     for param, shared_param in zip(model.parameters(), shared_model.parameters()):
@@ -32,6 +34,7 @@ def train(rank, args, shared_model, optimizer=None):
     model.train()
 
     state = env.reset()
+    state = np.concatenate([state] * 4, axis=0)
     state = torch.from_numpy(state)
     done = True
 
@@ -63,13 +66,15 @@ def train(rank, args, shared_model, optimizer=None):
             action = prob.multinomial().data
             log_prob = log_prob.gather(1, Variable(action))
 
-            state, reward, done, _ = env.step(action.numpy())
+            state_new, reward, done, _ = env.step(action.numpy())
+            state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
             done = done or episode_length >= args.max_episode_length
             reward = max(min(reward, 1), -1)
 
             if done:
                 episode_length = 0
                 state = env.reset()
+                state = np.concatenate([state] * 4, axis=0)
 
             state = torch.from_numpy(state)
             values.append(value)
@@ -94,13 +99,8 @@ def train(rank, args, shared_model, optimizer=None):
             advantage = R - values[i]
             value_loss = value_loss + 0.5 * advantage.pow(2)
 
-            # Generalized Advantage Estimataion
-            delta_t = rewards[i] + args.gamma * \
-                values[i + 1].data - values[i].data
-            gae = gae * args.gamma * args.tau + delta_t
-
             policy_loss = policy_loss - \
-                log_probs[i] * Variable(gae) - 0.01 * entropies[i]
+                log_probs[i] * Variable(advantage.data) - 0.01 * entropies[i]
 
         optimizer.zero_grad()
 
