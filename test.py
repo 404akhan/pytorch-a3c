@@ -21,7 +21,7 @@ def test(rank, args, shared_model):
     env.seed(args.seed + rank)
 
     model = ActorCritic(env.observation_space.shape[0], env.action_space)
-
+    
     model.eval()
 
     state = env.reset()
@@ -29,6 +29,7 @@ def test(rank, args, shared_model):
     state = torch.from_numpy(state)
     reward_sum = 0
     done = True
+    action_stat = [0] * (model.n_real_acts + model.n_aux_acts)
 
     start_time = time.time()
 
@@ -40,12 +41,19 @@ def test(rank, args, shared_model):
         # Sync with the shared model
         if done:
             model.load_state_dict(shared_model.state_dict())
+            
+            if not os.path.exists('model-a3c-aux'):
+                os.makedirs('model-a3c-aux')
+            torch.save(shared_model.state_dict(), 'model-a3c-aux/model.pth')
+            print('saved model')
 
         value, logit = model(Variable(state.unsqueeze(0), volatile=True))
         prob = F.softmax(logit)
         action = prob.max(1)[1].data.numpy()
 
         action_np = action[0, 0]
+        action_stat[action_np] += 1
+
         if action_np < model.n_real_acts:
             state_new, reward, done, _ = env.step(action_np)
             state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
@@ -73,6 +81,8 @@ def test(rank, args, shared_model):
                 time.strftime("%Hh %Mm %Ss",
                               time.gmtime(time.time() - start_time)),
                 reward_sum, episode_length))
+            print("actions stats real {}, aux {}".format(action_stat[:model.n_real_acts], action_stat[model.n_real_acts:]))
+            
             reward_sum = 0
             episode_length = 0
             actions.clear()
