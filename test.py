@@ -36,6 +36,7 @@ def test(rank, args, shared_model):
 
     while True:
         episode_length += 1
+        prev_action = 0 # NOOP
         # Sync with the shared model
         if done:
             model.load_state_dict(shared_model.state_dict())
@@ -61,13 +62,14 @@ def test(rank, args, shared_model):
             state = state.numpy()
 
             for _ in range(action_np - model.n_real_acts + 1):
-                state_new, rew, done, _ = env.step(np.random.randint(model.n_real_acts))
+                state_new, rew, done, _ = env.step(prev_action)
                 state = np.append(state[1:,:,:], state_new, axis=0) 
                 done = done or episode_length >= args.max_episode_length
 
                 reward_sum += rew
                 if done:
                     break
+        prev_action = action_np     
 
         if done:
             print("Time {}, episode reward {}, episode length {}".format(
