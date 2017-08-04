@@ -82,12 +82,13 @@ def test(rank, args, shared_model):
                               time.gmtime(time.time() - start_time)),
                 reward_sum, episode_length))
             print("actions stats real {}, aux {}".format(action_stat[:model.n_real_acts], action_stat[model.n_real_acts:]))
-            
+
             reward_sum = 0
             episode_length = 0
             actions.clear()
             state = env.reset()
             state = np.concatenate([state] * 4, axis=0)
+            action_stat = [0] * (model.n_real_acts + model.n_aux_acts)
             time.sleep(60)
 
         state = torch.from_numpy(state)
