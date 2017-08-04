@@ -58,6 +58,7 @@ def test(rank, args, shared_model):
             state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
             done = done or episode_length >= args.max_episode_length
             reward_sum += reward
+            prev_action = action_np     
         else:
             state = state.numpy()
 
@@ -69,7 +70,6 @@ def test(rank, args, shared_model):
                 reward_sum += rew
                 if done:
                     break
-        prev_action = action_np     
 
         if done:
             print("Time {}, episode reward {}, episode length {}".format(
