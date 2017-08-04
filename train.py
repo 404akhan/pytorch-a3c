@@ -43,21 +43,14 @@ def train(rank, args, shared_model, optimizer=None):
         episode_length += 1
         # Sync with the shared model
         model.load_state_dict(shared_model.state_dict())
-        if done:
-            cx = Variable(torch.zeros(1, 256))
-            hx = Variable(torch.zeros(1, 256))
-        else:
-            cx = Variable(cx.data)
-            hx = Variable(hx.data)
-
+        
         values = []
         log_probs = []
         rewards = []
         entropies = []
 
         for step in range(args.num_steps):
-            value, logit, (hx, cx) = model(
-                (Variable(state.unsqueeze(0)), (hx, cx)))
+            value, logit = model(Variable( state.unsqueeze(0) ))
             prob = F.softmax(logit)
             log_prob = F.log_softmax(logit)
             entropy = -(log_prob * prob).sum(1)
@@ -86,7 +79,7 @@ def train(rank, args, shared_model, optimizer=None):
 
         R = torch.zeros(1, 1)
         if not done:
-            value, _, _ = model((Variable(state.unsqueeze(0)), (hx, cx)))
+            value, _ = model(Variable( state.unsqueeze(0) ))
             R = value.data
 
         values.append(Variable(R))
