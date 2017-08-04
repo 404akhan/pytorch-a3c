@@ -39,7 +39,8 @@ parser.add_argument('--env-name', default='PongDeterministic-v3', metavar='ENV',
                     help='environment to train on (default: PongDeterministic-v3)')
 parser.add_argument('--no-shared', default=False, metavar='O',
                     help='use an optimizer without shared momentum.')
-
+parser.add_argument('--model-name', default='def', 
+                    help='for saving the model')
 
 if __name__ == '__main__':
     os.environ['OMP_NUM_THREADS'] = '1'  

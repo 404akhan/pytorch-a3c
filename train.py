@@ -47,7 +47,6 @@ def train(rank, args, shared_model, optimizer=None):
         values = []
         log_probs = []
         rewards = []
-        is_aux_actions = []
         entropies = []
 
         for step in range(args.num_steps):
@@ -69,7 +68,7 @@ def train(rank, args, shared_model, optimizer=None):
             else:
                 state = state.numpy()
                 reward = 0.
-                for _ in range(action_np - model.n_real_acts + 1):
+                for _ in range(action_np - model.n_real_acts + 2):
                     state_new, rew, done, _ = env.step(np.random.randint(model.n_real_acts))
                     state = np.append(state[1:,:,:], state_new, axis=0) 
                     done = done or episode_length >= args.max_episode_length
@@ -88,7 +87,6 @@ def train(rank, args, shared_model, optimizer=None):
             values.append(value)
             log_probs.append(log_prob)
             rewards.append(reward)
-            is_aux_actions.append(float(action_np >= model.n_real_acts))
 
             if done:
                 break
@@ -104,7 +102,7 @@ def train(rank, args, shared_model, optimizer=None):
         R = Variable(R)
         gae = torch.zeros(1, 1)
         for i in reversed(range(len(rewards))):
-            R = (args.gamma + (1-args.gamma)*is_aux_actions[i]) * R + rewards[i]
+            R = args.gamma * R + rewards[i]
             advantage = R - values[i]
             value_loss = value_loss + 0.5 * advantage.pow(2)
 

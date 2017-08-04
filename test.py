@@ -42,7 +42,7 @@ def test(rank, args, shared_model):
             
             if not os.path.exists('model-a3c-aux'):
                 os.makedirs('model-a3c-aux')
-            torch.save(shared_model.state_dict(), 'model-a3c-aux/model.pth')
+            torch.save(shared_model.state_dict(), 'model-a3c-aux/model-{}.pth'.format(args.model_name))
             print('saved model')
 
         value, logit = model(Variable(state.unsqueeze(0), volatile=True))
@@ -60,7 +60,7 @@ def test(rank, args, shared_model):
         else:
             state = state.numpy()
 
-            for _ in range(action_np - model.n_real_acts + 1):
+            for _ in range(action_np - model.n_real_acts + 2):
                 state_new, rew, done, _ = env.step(np.random.randint(model.n_real_acts))
                 state = np.append(state[1:,:,:], state_new, axis=0) 
                 done = done or episode_length >= args.max_episode_length
