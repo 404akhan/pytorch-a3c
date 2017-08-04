@@ -32,10 +32,8 @@ def test(rank, args, shared_model):
     action_stat = [0] * (model.n_real_acts + model.n_aux_acts)
 
     start_time = time.time()
-
-    # a quick hack to prevent the agent from stucking
-    actions = deque(maxlen=100)
     episode_length = 0
+
     while True:
         episode_length += 1
         # Sync with the shared model
@@ -71,11 +69,6 @@ def test(rank, args, shared_model):
                 if done:
                     break
 
-        # a quick hack to prevent the agent from stucking
-        actions.append(action[0, 0])
-        if actions.count(actions[0]) == actions.maxlen:
-            done = True
-
         if done:
             print("Time {}, episode reward {}, episode length {}".format(
                 time.strftime("%Hh %Mm %Ss",
@@ -85,7 +78,6 @@ def test(rank, args, shared_model):
 
             reward_sum = 0
             episode_length = 0
-            actions.clear()
             state = env.reset()
             state = np.concatenate([state] * 4, axis=0)
             action_stat = [0] * (model.n_real_acts + model.n_aux_acts)
