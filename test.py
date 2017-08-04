@@ -45,10 +45,23 @@ def test(rank, args, shared_model):
         prob = F.softmax(logit)
         action = prob.max(1)[1].data.numpy()
 
-        state_new, reward, done, _ = env.step(action[0, 0])
-        state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
-        done = done or episode_length >= args.max_episode_length
-        reward_sum += reward
+        action_np = action[0, 0]
+        if action_np < model.n_real_acts:
+            state_new, reward, done, _ = env.step(action_np)
+            state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
+            done = done or episode_length >= args.max_episode_length
+            reward_sum += reward
+        else:
+            state = state.numpy()
+
+            for _ in range(action_np - model.n_real_acts + 1):
+                state_new, rew, done, _ = env.step(np.random.randint(model.n_real_acts))
+                state = np.append(state[1:,:,:], state_new, axis=0) 
+                done = done or episode_length >= args.max_episode_length
+
+                reward_sum += rew
+                if done:
+                    break
 
         # a quick hack to prevent the agent from stucking
         actions.append(action[0, 0])

@@ -47,6 +47,7 @@ def train(rank, args, shared_model, optimizer=None):
         values = []
         log_probs = []
         rewards = []
+        is_aux_actions = []
         entropies = []
 
         for step in range(args.num_steps):
@@ -59,10 +60,24 @@ def train(rank, args, shared_model, optimizer=None):
             action = prob.multinomial().data
             log_prob = log_prob.gather(1, Variable(action))
 
-            state_new, reward, done, _ = env.step(action.numpy())
-            state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
-            done = done or episode_length >= args.max_episode_length
-            reward = max(min(reward, 1), -1)
+            action_np = action.numpy()[0][0]
+            if action_np < model.n_real_acts:
+                state_new, reward, done, _ = env.step(action_np)
+                state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
+                done = done or episode_length >= args.max_episode_length
+                reward = max(min(reward, 1), -1)
+            else:
+                state = state.numpy()
+                reward = 0.
+                for _ in range(action_np - model.n_real_acts + 1):
+                    state_new, rew, done, _ = env.step(np.random.randint(model.n_real_acts))
+                    state = np.append(state[1:,:,:], state_new, axis=0) 
+                    done = done or episode_length >= args.max_episode_length
+                    rew = max(min(rew, 1), -1)
+
+                    reward += rew
+                    if done:
+                        break
 
             if done:
                 episode_length = 0
@@ -73,6 +88,7 @@ def train(rank, args, shared_model, optimizer=None):
             values.append(value)
             log_probs.append(log_prob)
             rewards.append(reward)
+            is_aux_actions.append(float(action_np >= model.n_real_acts))
 
             if done:
                 break
@@ -88,7 +104,7 @@ def train(rank, args, shared_model, optimizer=None):
         R = Variable(R)
         gae = torch.zeros(1, 1)
         for i in reversed(range(len(rewards))):
-            R = args.gamma * R + rewards[i]
+            R = (args.gamma + (1-args.gamma)*is_aux_actions[i]) * R + rewards[i]
             advantage = R - values[i]
             value_loss = value_loss + 0.5 * advantage.pow(2)
 
