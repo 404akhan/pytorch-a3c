@@ -67,7 +67,7 @@ if __name__ == '__main__':
         filename = args.load_dir
         print('==> loading checkpoint {}'.format(filename))
         checkpoint = torch.load(filename)
-        attn_net.load_state_dict(checkpoint)
+        shared_model.load_state_dict(checkpoint)
         print('==> loaded checkpoint {}'.format(filename))
 
     processes = []
