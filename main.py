@@ -41,6 +41,8 @@ parser.add_argument('--no-shared', default=False, metavar='O',
                     help='use an optimizer without shared momentum.')
 parser.add_argument('--model-name', default='def', 
                     help='for saving the model')
+parser.add_argument('--load-dir',
+                    help='load model from path')
 
 if __name__ == '__main__':
     os.environ['OMP_NUM_THREADS'] = '1'  
@@ -60,6 +62,13 @@ if __name__ == '__main__':
     else:
         optimizer = my_optim.SharedAdam(shared_model.parameters(), lr=args.lr)
         optimizer.share_memory()
+
+    if args.load_dir:
+        filename = args.load_dir
+        print('==> loading checkpoint {}'.format(filename))
+        checkpoint = torch.load(filename)
+        attn_net.load_state_dict(checkpoint)
+        print('==> loaded checkpoint {}'.format(filename))
 
     processes = []
 
