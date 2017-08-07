@@ -6,7 +6,8 @@ from universe import vectorized
 from universe.wrappers import Unvectorize, Vectorize
 
 import cv2
-
+from skimage.color import rgb2gray
+import matplotlib.pyplot as plt 
 
 # Taken from https://github.com/openai/universe-starter-agent
 def create_atari_env(env_id):
@@ -26,7 +27,7 @@ def _process_frame42(frame):
     # aren't close enough to the pixel boundary.
     frame = cv2.resize(frame, (80, 80))
     frame = cv2.resize(frame, (42, 42))
-    frame = frame.mean(2)
+    frame = rgb2gray(frame)
     frame = frame.astype(np.float32)
     frame *= (1.0 / 255.0)
     frame = np.reshape(frame, [1, 42, 42])
