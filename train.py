@@ -24,6 +24,7 @@ def is_dead(info):
     if is_dead.current_life > info['ale.lives']:
         dead = True
     is_dead.current_life = info['ale.lives']
+    return False # lets ignore and test
     return dead
 
 is_dead.current_life = 0
@@ -48,7 +49,6 @@ def train(rank, args, shared_model, optimizer=None):
 
     episode_length = 0
     while True:
-        episode_length += 1
         # Sync with the shared model
         model.load_state_dict(shared_model.state_dict())
         
@@ -73,7 +73,9 @@ def train(rank, args, shared_model, optimizer=None):
                 dead = is_dead(info)
                 state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
                 done = done or episode_length >= args.max_episode_length
+                
                 reward = max(min(reward, 1), -1)
+                episode_length += 1
             else:
                 state = state.numpy()
                 reward = 0.
@@ -85,6 +87,7 @@ def train(rank, args, shared_model, optimizer=None):
                     rew = max(min(rew, 1), -1)
 
                     reward += rew
+                    episode_length += 1
                     if done or dead:
                         break
 

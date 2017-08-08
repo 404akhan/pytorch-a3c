@@ -19,6 +19,7 @@ def is_dead(info):
     if is_dead.current_life > info['ale.lives']:
         dead = True
     is_dead.current_life = info['ale.lives']
+    return False # lets ignore and test
     return dead
 
 is_dead.current_life = 0
@@ -44,7 +45,6 @@ def test(rank, args, shared_model):
     episode_length = 0
 
     while True:
-        episode_length += 1
         # Sync with the shared model
         if done:
             model.load_state_dict(shared_model.state_dict())
@@ -64,23 +64,30 @@ def test(rank, args, shared_model):
         if action_np < model.n_real_acts:
             state_new, reward, done, info = env.step(action_np)
             dead = is_dead(info)
-            if args.testing: env.render()
+            
+            if args.testing: 
+                print('episode', episode_length, 'normal action', action_np, 'lives', info['ale.lives'])
+                env.render()
             state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
             done = done or episode_length >= args.max_episode_length
+
             reward_sum += reward
+            episode_length += 1
         else:
             state = state.numpy()
 
             for _ in range(action_np - model.n_real_acts + 2):
                 state_new, rew, done, info = env.step(0) # instead of random perform NOOP=0
                 dead = is_dead(info)
+
                 if args.testing: 
-                    print('episode', episode_length, 'random action', action_np)
+                    print('episode', episode_length, 'random action', action_np, 'lives', info['ale.lives'])
                     env.render()
                 state = np.append(state[1:,:,:], state_new, axis=0) 
                 done = done or episode_length >= args.max_episode_length
 
                 reward_sum += rew
+                episode_length += 1
                 if done or dead:
                     break
         
