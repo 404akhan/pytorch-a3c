@@ -54,6 +54,7 @@ def test(rank, args, shared_model):
 
         if action_np < model.n_real_acts:
             state_new, reward, done, _ = env.step(action_np)
+            if args.testing: env.render()
             state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
             done = done or episode_length >= args.max_episode_length
             reward_sum += reward
@@ -61,7 +62,10 @@ def test(rank, args, shared_model):
             state = state.numpy()
 
             for _ in range(action_np - model.n_real_acts + 2):
-                state_new, rew, done, _ = env.step(np.random.randint(model.n_real_acts))
+                state_new, rew, done, _ = env.step(0) # instead of random perform NOOP=0
+                if args.testing: 
+                    print('episode', episode_length, 'random action', action_np)
+                    env.render()
                 state = np.append(state[1:,:,:], state_new, axis=0) 
                 done = done or episode_length >= args.max_episode_length
 
@@ -81,6 +85,6 @@ def test(rank, args, shared_model):
             state = env.reset()
             state = np.concatenate([state] * 4, axis=0)
             action_stat = [0] * (model.n_real_acts + model.n_aux_acts)
-            time.sleep(60)
+            if not args.testing: time.sleep(60)
 
         state = torch.from_numpy(state)

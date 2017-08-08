@@ -43,6 +43,9 @@ parser.add_argument('--model-name', default='def',
                     help='for saving the model')
 parser.add_argument('--load-dir',
                     help='load model from path')
+parser.add_argument('--testing', default=False,
+                    help='to run model')
+
 
 if __name__ == '__main__':
     os.environ['OMP_NUM_THREADS'] = '1'  
@@ -76,9 +79,10 @@ if __name__ == '__main__':
     p.start()
     processes.append(p)
 
-    for rank in range(0, args.num_processes):
-        p = mp.Process(target=train, args=(rank, args, shared_model, optimizer))
-        p.start()
-        processes.append(p)
+    if not args.testing:
+        for rank in range(0, args.num_processes):
+            p = mp.Process(target=train, args=(rank, args, shared_model, optimizer))
+            p.start()
+            processes.append(p)
     for p in processes:
         p.join()
