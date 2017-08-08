@@ -14,6 +14,15 @@ from collections import deque
 
 import numpy as np 
 
+def is_dead(info):
+    dead = False
+    if is_dead.current_life > info['ale.lives']:
+        dead = True
+    is_dead.current_life = info['ale.lives']
+    return dead
+
+is_dead.current_life = 0
+
 def test(rank, args, shared_model):
     torch.manual_seed(args.seed + rank)
 
@@ -53,7 +62,8 @@ def test(rank, args, shared_model):
         action_stat[action_np] += 1
 
         if action_np < model.n_real_acts:
-            state_new, reward, done, _ = env.step(action_np)
+            state_new, reward, done, info = env.step(action_np)
+            dead = is_dead(info)
             if args.testing: env.render()
             state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
             done = done or episode_length >= args.max_episode_length
@@ -62,7 +72,8 @@ def test(rank, args, shared_model):
             state = state.numpy()
 
             for _ in range(action_np - model.n_real_acts + 2):
-                state_new, rew, done, _ = env.step(0) # instead of random perform NOOP=0
+                state_new, rew, done, info = env.step(0) # instead of random perform NOOP=0
+                dead = is_dead(info)
                 if args.testing: 
                     print('episode', episode_length, 'random action', action_np)
                     env.render()
@@ -70,8 +81,11 @@ def test(rank, args, shared_model):
                 done = done or episode_length >= args.max_episode_length
 
                 reward_sum += rew
-                if done:
+                if done or dead:
                     break
+        
+        if dead:
+            state = np.concatenate([state_new] * 4, axis=0)
 
         if done:
             print("Time {}, episode reward {}, episode length {}".format(
