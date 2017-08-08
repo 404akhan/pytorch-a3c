@@ -93,7 +93,7 @@ def train(rank, args, shared_model, optimizer=None):
                 state = env.reset()
                 state = np.concatenate([state] * 4, axis=0)
             elif dead:
-                state = np.concatenate([state] * 4, axis=0)
+                state = np.concatenate([state_new] * 4, axis=0)
 
             state = torch.from_numpy(state)
             values.append(value)
