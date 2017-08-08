@@ -19,6 +19,13 @@ def ensure_shared_grads(model, shared_model):
             return
         shared_param._grad = param.grad
 
+def check_lives(done, info):
+    if check_lives.current_life > info['ale.lives']:
+        return True
+    check_lives.current_life = info['ale.lives']
+    return done
+
+check_lives.current_life = 0
 
 def train(rank, args, shared_model, optimizer=None):
     torch.manual_seed(args.seed + rank)
@@ -61,7 +68,8 @@ def train(rank, args, shared_model, optimizer=None):
 
             action_np = action.numpy()[0][0]
             if action_np < model.n_real_acts:
-                state_new, reward, done, _ = env.step(action_np)
+                state_new, reward, done, info = env.step(action_np)
+                done = check_lives(done, info)
                 state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
                 done = done or episode_length >= args.max_episode_length
                 reward = max(min(reward, 1), -1)
@@ -69,7 +77,8 @@ def train(rank, args, shared_model, optimizer=None):
                 state = state.numpy()
                 reward = 0.
                 for _ in range(action_np - model.n_real_acts + 2):
-                    state_new, rew, done, _ = env.step(0)  # instead of random perform NOOP=0
+                    state_new, rew, done, info = env.step(0)  # instead of random perform NOOP=0
+                    done = check_lives(done, info)
                     state = np.append(state[1:,:,:], state_new, axis=0) 
                     done = done or episode_length >= args.max_episode_length
                     rew = max(min(rew, 1), -1)
