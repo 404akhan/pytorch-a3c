@@ -21,7 +21,7 @@ def ensure_shared_grads(model, shared_model):
 
 def check_lives(done, info):
     if check_lives.current_life > info['ale.lives']:
-        return True
+        done = True
     check_lives.current_life = info['ale.lives']
     return done
 
