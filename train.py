@@ -19,13 +19,14 @@ def ensure_shared_grads(model, shared_model):
             return
         shared_param._grad = param.grad
 
-def check_lives(done, info):
-    if check_lives.current_life > info['ale.lives']:
-        done = True
-    check_lives.current_life = info['ale.lives']
-    return done
+def is_dead(info):
+    dead = False
+    if is_dead.current_life > info['ale.lives']:
+        dead = True
+    is_dead.current_life = info['ale.lives']
+    return dead
 
-check_lives.current_life = 0
+is_dead.current_life = 0
 
 def train(rank, args, shared_model, optimizer=None):
     torch.manual_seed(args.seed + rank)
@@ -69,7 +70,7 @@ def train(rank, args, shared_model, optimizer=None):
             action_np = action.numpy()[0][0]
             if action_np < model.n_real_acts:
                 state_new, reward, done, info = env.step(action_np)
-                done = check_lives(done, info)
+                dead = is_dead(info)
                 state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
                 done = done or episode_length >= args.max_episode_length
                 reward = max(min(reward, 1), -1)
@@ -78,18 +79,20 @@ def train(rank, args, shared_model, optimizer=None):
                 reward = 0.
                 for _ in range(action_np - model.n_real_acts + 2):
                     state_new, rew, done, info = env.step(0)  # instead of random perform NOOP=0
-                    done = check_lives(done, info)
+                    dead = is_dead(info)
                     state = np.append(state[1:,:,:], state_new, axis=0) 
                     done = done or episode_length >= args.max_episode_length
                     rew = max(min(rew, 1), -1)
 
                     reward += rew
-                    if done:
+                    if done or dead:
                         break
 
             if done:
                 episode_length = 0
                 state = env.reset()
+                state = np.concatenate([state] * 4, axis=0)
+            elif dead:
                 state = np.concatenate([state] * 4, axis=0)
 
             state = torch.from_numpy(state)
@@ -97,11 +100,11 @@ def train(rank, args, shared_model, optimizer=None):
             log_probs.append(log_prob)
             rewards.append(reward)
 
-            if done:
+            if done or dead:
                 break
 
         R = torch.zeros(1, 1)
-        if not done:
+        if not done and not dead:
             value, _ = model(Variable( state.unsqueeze(0) ))
             R = value.data
 
