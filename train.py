@@ -24,7 +24,6 @@ def is_dead(info):
     if is_dead.current_life > info['ale.lives']:
         dead = True
     is_dead.current_life = info['ale.lives']
-    return False # lets ignore and test
     return dead
 
 is_dead.current_life = 0
@@ -71,6 +70,7 @@ def train(rank, args, shared_model, optimizer=None):
             if action_np < model.n_real_acts:
                 state_new, reward, done, info = env.step(action_np)
                 dead = is_dead(info)
+                if dead: reward = -1.
                 state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
                 done = done or episode_length >= args.max_episode_length
                 
@@ -82,32 +82,31 @@ def train(rank, args, shared_model, optimizer=None):
                 for _ in range(action_np - model.n_real_acts + 2):
                     state_new, rew, done, info = env.step(0)  # instead of random perform NOOP=0
                     dead = is_dead(info)
+                    if dead: rew = -1.
                     state = np.append(state[1:,:,:], state_new, axis=0) 
                     done = done or episode_length >= args.max_episode_length
                     rew = max(min(rew, 1), -1)
 
                     reward += rew
                     episode_length += 1
-                    if done or dead:
+                    if done:
                         break
 
             if done:
                 episode_length = 0
                 state = env.reset()
                 state = np.concatenate([state] * 4, axis=0)
-            elif dead:
-                state = np.concatenate([state_new] * 4, axis=0)
 
             state = torch.from_numpy(state)
             values.append(value)
             log_probs.append(log_prob)
             rewards.append(reward)
 
-            if done or dead:
+            if done:
                 break
 
         R = torch.zeros(1, 1)
-        if not done and not dead:
+        if not done:
             value, _ = model(Variable( state.unsqueeze(0) ))
             R = value.data
 

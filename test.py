@@ -19,7 +19,6 @@ def is_dead(info):
     if is_dead.current_life > info['ale.lives']:
         dead = True
     is_dead.current_life = info['ale.lives']
-    return False # lets ignore and test
     return dead
 
 is_dead.current_life = 0
@@ -64,6 +63,7 @@ def test(rank, args, shared_model):
         if action_np < model.n_real_acts:
             state_new, reward, done, info = env.step(action_np)
             dead = is_dead(info)
+            if dead: reward = -1.
             
             if args.testing: 
                 print('episode', episode_length, 'normal action', action_np, 'lives', info['ale.lives'])
@@ -79,6 +79,7 @@ def test(rank, args, shared_model):
             for _ in range(action_np - model.n_real_acts + 2):
                 state_new, rew, done, info = env.step(0) # instead of random perform NOOP=0
                 dead = is_dead(info)
+                if dead: rew = -1.
 
                 if args.testing: 
                     print('episode', episode_length, 'random action', action_np, 'lives', info['ale.lives'])
@@ -88,11 +89,8 @@ def test(rank, args, shared_model):
 
                 reward_sum += rew
                 episode_length += 1
-                if done or dead:
+                if done:
                     break
-        
-        if dead:
-            state = np.concatenate([state_new] * 4, axis=0)
 
         if done:
             print("Time {}, episode reward {}, episode length {}".format(
