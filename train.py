@@ -47,7 +47,7 @@ def train(rank, args, shared_model, optimizer=None):
     done = True
 
     episode_length = 0
-    while True:
+    for ep_counter in itertools.count(1):
         # Sync with the shared model
         model.load_state_dict(shared_model.state_dict())
         
@@ -93,6 +93,7 @@ def train(rank, args, shared_model, optimizer=None):
             if done:
                 episode_length = 0
                 state = env.reset()
+                env.seed(args.seed + rank + (args.num_processes+1)*ep_counter)
                 state = np.concatenate([state] * 4, axis=0)
             elif dead:
                 state = np.concatenate([state_new] * 4, axis=0)

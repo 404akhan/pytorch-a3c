@@ -43,7 +43,7 @@ def test(rank, args, shared_model):
     start_time = time.time()
     episode_length = 0
 
-    while True:
+    for ep_counter in itertools.count(1):
         # Sync with the shared model
         if done:
             model.load_state_dict(shared_model.state_dict())
@@ -100,6 +100,7 @@ def test(rank, args, shared_model):
             reward_sum = 0
             episode_length = 0
             state = env.reset()
+            env.seed(args.seed + rank + (args.num_processes+1)*ep_counter)
             state = np.concatenate([state] * 4, axis=0)
             action_stat = [0] * (model.n_real_acts + model.n_aux_acts)
             if not args.testing: time.sleep(60)
