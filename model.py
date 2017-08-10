@@ -67,6 +67,6 @@ class ActorCritic(torch.nn.Module):
         x = F.elu(self.conv4(x))
 
         x = x.view(-1, 32 * 3 * 3)
-        x = F.elu(self.fc(x))
+        x = F.relu(self.fc(x))
 
         return self.critic_linear(x), self.actor_linear(x)
