@@ -34,20 +34,24 @@ def weights_init(m):
 
 class ActorCritic(torch.nn.Module):
 
-    def __init__(self, num_inputs, action_space, aux_actions):
+    def __init__(self, action_space, num_atoms=50):
         super(ActorCritic, self).__init__()
         self.conv1 = nn.Conv2d(4, 32, 3, stride=2, padding=1)
         self.conv2 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
         self.conv3 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
         self.conv4 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
 
-        self.fc = nn.Linear(32 * 3 * 3, 256)
+        self.fc_critic = nn.Linear(32 * 3 * 3, 256)
+        self.fc_actor = nn.Linear(32 * 3 * 3, 256)
 
-        num_outputs = action_space.n + aux_actions
-        self.critic_linear = nn.Linear(256, 1)
-        self.actor_linear = nn.Linear(256, num_outputs)
+        self.num_atoms = num_atoms
+        self.num_outputs = action_space.n
+
+        self.critic_linear = nn.Linear(256, 1) # self.num_atoms)
+        self.actor_linear = nn.Linear(256, self.num_outputs)
 
         self.apply(weights_init)
+
         self.actor_linear.weight.data = normalized_columns_initializer(
             self.actor_linear.weight.data, 0.01)
         self.actor_linear.bias.data.fill_(0)
@@ -55,18 +59,17 @@ class ActorCritic(torch.nn.Module):
             self.critic_linear.weight.data, 1.0)
         self.critic_linear.bias.data.fill_(0)
 
-        self.n_real_acts = action_space.n
-        self.n_aux_acts = aux_actions
         self.train()
 
     def forward(self, inputs):
-        # TODO try all Relu
         x = F.relu(self.conv1(inputs))
         x = F.relu(self.conv2(x))
         x = F.relu(self.conv3(x))
         x = F.relu(self.conv4(x))
 
         x = x.view(-1, 32 * 3 * 3)
-        x = F.relu(self.fc(x))
 
-        return self.critic_linear(x), self.actor_linear(x)
+        x_critic = F.relu(self.fc_critic(x))
+        x_actor = F.relu(self.fc_actor(x))
+
+        return self.critic_linear(x_critic), self.actor_linear(x_actor)

@@ -35,7 +35,7 @@ def train(rank, args, shared_model, optimizer=None):
     env = create_atari_env(args.env_name)
     env.seed(args.seed + rank)
 
-    model = ActorCritic(env.observation_space.shape[0], env.action_space, args.num_skips)
+    model = ActorCritic(env.action_space)
 
     if optimizer is None:
         optimizer = optim.Adam(shared_model.parameters(), lr=args.lr)
@@ -68,28 +68,13 @@ def train(rank, args, shared_model, optimizer=None):
             log_prob = log_prob.gather(1, Variable(action))
 
             action_np = action.numpy()[0][0]
-            if action_np < model.n_real_acts:
-                state_new, reward, done, info = env.step(action_np)
-                dead = is_dead(info)
-                state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
-                done = done or episode_length >= args.max_episode_length
-                
-                reward = max(min(reward, 1), -1)
-                episode_length += 1
-            else:
-                state = state.numpy()
-                reward = 0.
-                for _ in range(action_np - model.n_real_acts + 2):
-                    state_new, rew, done, info = env.step(0)  # instead of random perform NOOP=0
-                    dead = is_dead(info)
-                    state = np.append(state[1:,:,:], state_new, axis=0) 
-                    done = done or episode_length >= args.max_episode_length
-                    rew = max(min(rew, 1), -1)
-
-                    reward += rew
-                    episode_length += 1
-                    if done or dead:
-                        break
+            state_new, reward, done, info = env.step(action_np)
+            dead = is_dead(info)
+            state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
+            done = done or episode_length >= args.max_episode_length
+            
+            reward = max(min(reward, 1), -1)
+            episode_length += 1
 
             if done:
                 episode_length = 0

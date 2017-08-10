@@ -30,7 +30,7 @@ def test(rank, args, shared_model):
     env = create_atari_env(args.env_name)
     env.seed(args.seed + rank)
 
-    model = ActorCritic(env.observation_space.shape[0], env.action_space, args.num_skips)
+    model = ActorCritic(env.action_space)
     
     model.eval()
 
@@ -39,7 +39,7 @@ def test(rank, args, shared_model):
     state = torch.from_numpy(state)
     reward_sum = 0
     done = True
-    action_stat = [0] * (model.n_real_acts + model.n_aux_acts)
+    action_stat = [0] * model.num_outputs
 
     start_time = time.time()
     episode_length = 0
@@ -61,49 +61,31 @@ def test(rank, args, shared_model):
         action_np = action[0, 0]
         action_stat[action_np] += 1
 
-        if action_np < model.n_real_acts:
-            state_new, reward, done, info = env.step(action_np)
-            dead = is_dead(info)
-            
-            if args.testing: 
-                print('episode', episode_length, 'normal action', action_np, 'lives', info['ale.lives'])
-                env.render()
-            state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
-            done = done or episode_length >= args.max_episode_length
+        state_new, reward, done, info = env.step(action_np)
+        dead = is_dead(info)
+        
+        if args.testing: 
+            print('episode', episode_length, 'normal action', action_np, 'lives', info['ale.lives'])
+            env.render()
+        state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
+        done = done or episode_length >= args.max_episode_length
 
-            reward_sum += reward
-            episode_length += 1
-        else:
-            state = state.numpy()
-
-            for _ in range(action_np - model.n_real_acts + 2):
-                state_new, rew, done, info = env.step(0) # instead of random perform NOOP=0
-                dead = is_dead(info)
-
-                if args.testing: 
-                    print('episode', episode_length, 'random action', action_np, 'lives', info['ale.lives'])
-                    env.render()
-                state = np.append(state[1:,:,:], state_new, axis=0) 
-                done = done or episode_length >= args.max_episode_length
-
-                reward_sum += rew
-                episode_length += 1
-                if done or dead:
-                    break
+        reward_sum += reward
+        episode_length += 1
 
         if done:
             print("Time {}, episode reward {}, episode length {}".format(
                 time.strftime("%Hh %Mm %Ss",
                               time.gmtime(time.time() - start_time)),
                 reward_sum, episode_length))
-            print("actions stats real {}, aux {}".format(action_stat[:model.n_real_acts], action_stat[model.n_real_acts:]))
+            print("actions stats real {}".format(action_stat[:model.num_outputs]))
 
             reward_sum = 0
             episode_length = 0
             state = env.reset()
             env.seed(args.seed + rank + (args.num_processes+1)*ep_counter)
             state = np.concatenate([state] * 4, axis=0)
-            action_stat = [0] * (model.n_real_acts + model.n_aux_acts)
+            action_stat = [0] * model.num_outputs
             if not args.testing: time.sleep(60)
 
         state = torch.from_numpy(state)

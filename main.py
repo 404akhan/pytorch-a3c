@@ -56,8 +56,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
 
     env = create_atari_env(args.env_name)
-    shared_model = ActorCritic(
-        env.observation_space.shape[0], env.action_space, args.num_skips)
+    shared_model = ActorCritic(env.action_space)
     shared_model.share_memory()
 
     if args.no_shared:
