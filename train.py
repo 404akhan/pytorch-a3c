@@ -57,7 +57,8 @@ def train(rank, args, shared_model, optimizer=None):
         rewards = []
         entropies = []
 
-        for step in range(args.num_steps):
+        step = 0
+        while step < args.num_steps:
             value, logit = model(Variable( state.unsqueeze(0) ))
             prob = F.softmax(logit)
             log_prob = F.log_softmax(logit)
@@ -76,6 +77,7 @@ def train(rank, args, shared_model, optimizer=None):
                 
                 reward = max(min(reward, 1), -1)
                 episode_length += 1
+                step += 1
             else:
                 state = state.numpy()
                 reward = 0.
@@ -88,6 +90,7 @@ def train(rank, args, shared_model, optimizer=None):
 
                     reward += rew
                     episode_length += 1
+                    step += 1
                     if done or dead:
                         break
 
