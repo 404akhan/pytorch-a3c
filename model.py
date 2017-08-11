@@ -1,5 +1,4 @@
 import math
-
 import numpy as np
 
 import torch
@@ -34,7 +33,7 @@ def weights_init(m):
 
 class ActorCritic(torch.nn.Module):
 
-    def __init__(self, action_space, num_atoms=50):
+    def __init__(self, num_actions, num_atoms=51):
         super(ActorCritic, self).__init__()
         self.conv1 = nn.Conv2d(4, 32, 3, stride=2, padding=1)
         self.conv2 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
@@ -45,21 +44,28 @@ class ActorCritic(torch.nn.Module):
         self.fc_actor = nn.Linear(32 * 3 * 3, 256)
 
         self.num_atoms = num_atoms
-        self.num_outputs = action_space.n
+        self.num_outputs = num_actions
 
-        self.critic_linear = nn.Linear(256, 1) # self.num_atoms)
+        self.critic_linear = nn.Linear(256, self.num_atoms)
         self.actor_linear = nn.Linear(256, self.num_outputs)
 
         self.apply(weights_init)
 
-        self.actor_linear.weight.data = normalized_columns_initializer(
-            self.actor_linear.weight.data, 0.01)
-        self.actor_linear.bias.data.fill_(0)
-        self.critic_linear.weight.data = normalized_columns_initializer(
-            self.critic_linear.weight.data, 1.0)
+        self.critic_linear.weight.data = normalized_columns_initializer(self.critic_linear.weight.data, 0.01)
         self.critic_linear.bias.data.fill_(0)
 
+        self.actor_linear.weight.data = normalized_columns_initializer(self.actor_linear.weight.data, 0.01)
+        self.actor_linear.bias.data.fill_(0)
+
         self.train()
+
+        self.gamma = 0.99
+        self.N = 51
+        self.Vmax = 25
+        self.Vmin = -self.Vmax
+        self.dz = 1.
+        self.z = np.linspace(self.Vmin, self.Vmax, self.N) #, dtype=np.int32)
+
 
     def forward(self, inputs):
         x = F.relu(self.conv1(inputs))
@@ -73,3 +79,36 @@ class ActorCritic(torch.nn.Module):
         x_actor = F.relu(self.fc_actor(x))
 
         return self.critic_linear(x_critic), self.actor_linear(x_actor)
+
+
+    def get_loss(self, r, probs):
+        # r         | numpy array (bsize)
+        # probs     | pytorch Variable (bsize+1 x 51)
+        # return    | loss ()
+        bsize = r.shape[0]
+        r_rep = np.tile(np.expand_dims(r, 1), (1, self.N))
+        Tz = np.clip(r_rep + self.gamma * self.z, self.Vmin, self.Vmax)
+        # Tz | bsize x N
+        b = (Tz - self.Vmin) / self.dz # b[batch, i] belongs [0, N-1]
+        l, u = np.floor(b).astype(np.int32), np.ceil(b).astype(np.int32)
+
+        m = np.zeros((bsize, self.N), dtype=np.float32)
+        probs_np = probs.data.numpy()
+
+        for i in range(self.N):
+            m[range(bsize), l[:, i]] += probs_np[1:, i] * (u[:, i] - b[:, i])
+            m[range(bsize), u[:, i]] += probs_np[1:, i] * (b[:, i] - l[:, i])
+
+        loss = - torch.sum(Variable(torch.from_numpy(m)) * torch.log(probs[:-1]))
+        return loss
+
+
+    def get_v(self, probs, batch=True):
+        # probs     | pytorch Variable (bsize x 51)
+        # return    | numpy array (bsize) or scalar
+        V = self.z * probs.data.numpy()
+        V = np.sum(V, axis=1) # bsize
+
+        if not batch:
+            return np.squeeze(V)
+        return V

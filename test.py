@@ -30,7 +30,7 @@ def test(rank, args, shared_model):
     env = create_atari_env(args.env_name)
     env.seed(args.seed + rank)
 
-    model = ActorCritic(env.action_space)
+    model = ActorCritic(env.action_space.n)
     
     model.eval()
 
@@ -54,7 +54,7 @@ def test(rank, args, shared_model):
             torch.save(shared_model.state_dict(), 'model-a3c-aux/model-{}.pth'.format(args.model_name))
             print('saved model')
 
-        value, logit = model(Variable(state.unsqueeze(0), volatile=True))
+        _, logit = model(Variable(state.unsqueeze(0), volatile=True))
         prob = F.softmax(logit)
         action = prob.max(1)[1].data.numpy()
 

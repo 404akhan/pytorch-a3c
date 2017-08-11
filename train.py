@@ -35,7 +35,7 @@ def train(rank, args, shared_model, optimizer=None):
     env = create_atari_env(args.env_name)
     env.seed(args.seed + rank)
 
-    model = ActorCritic(env.action_space)
+    model = ActorCritic(env.action_space.n)
 
     if optimizer is None:
         optimizer = optim.Adam(shared_model.parameters(), lr=args.lr)
@@ -54,11 +54,16 @@ def train(rank, args, shared_model, optimizer=None):
         
         values = []
         log_probs = []
+        atoms_probs = []
         rewards = []
         entropies = []
 
         for step in range(args.num_steps):
-            value, logit = model(Variable( state.unsqueeze(0) ))
+            atoms_logit, logit = model(Variable( state.unsqueeze(0) ))
+            atoms_prob = F.softmax(atoms_logit)
+            value = model.get_v(atoms_prob, batch=False)
+            atoms_probs.append(atoms_prob)
+
             prob = F.softmax(logit)
             log_prob = F.log_softmax(logit)
             entropy = -(log_prob * prob).sum(1)
@@ -92,24 +97,26 @@ def train(rank, args, shared_model, optimizer=None):
             if done or dead:
                 break
 
-        R = torch.zeros(1, 1)
+        value_last = 0
+        atoms_prob_last = Variable(torch.zeros(1, model.N))
+        atoms_prob_last[0, int( (model.N-1)/2 )] = 1
         if not done and not dead:
-            value, _ = model(Variable( state.unsqueeze(0) ))
-            R = value.data
+            atoms_logit, _ = model(Variable( state.unsqueeze(0) ))
+            atoms_prob_last = F.softmax(atoms_logit)
+            value_last = model.get_v(atoms_prob_last, batch=False)
 
-        values.append(Variable(R))
+        values.append(value_last)
+        atoms_probs.append(atoms_prob_last)
         policy_loss = 0
-        value_loss = 0
-        R = Variable(R)
-        gae = torch.zeros(1, 1)
         for i in reversed(range(len(rewards))):
-            R = args.gamma * R + rewards[i]
-            advantage = R - values[i]
-            value_loss = value_loss + 0.5 * advantage.pow(2)
+            # todo, change to values[1:] * gamma + rewards - values[:-1]
+            advantage = args.gamma * values[i+1] + rewards[i] - values[i]
 
             policy_loss = policy_loss - \
-                log_probs[i] * Variable(advantage.data) - 0.01 * entropies[i]
-
+                log_probs[i] * advantage - 0.01 * entropies[i]
+        policy_loss = policy_loss.squeeze()
+        value_loss = model.get_loss(np.array(rewards), torch.cat(atoms_probs))        
+        
         optimizer.zero_grad()
 
         (policy_loss + 0.5 * value_loss).backward()
