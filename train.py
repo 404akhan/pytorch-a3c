@@ -128,7 +128,7 @@ def train(rank, args, shared_model, optimizer=None):
         optimizer.zero_grad()
 
         (policy_loss + 0.5 * value_loss).backward()
-        torch.nn.utils.clip_grad_norm(model.parameters(), 5.)
+        torch.nn.utils.clip_grad_norm(model.parameters(), 40.)
 
         ensure_shared_grads(model, shared_model)
         optimizer.step()
