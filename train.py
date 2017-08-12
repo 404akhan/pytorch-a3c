@@ -111,19 +111,19 @@ def train(rank, args, shared_model, optimizer=None):
         policy_loss = 0
         for i in reversed(range(len(rewards))):
             # todo, change to values[1:] * gamma + rewards - values[:-1]
-            advantage = args.gamma * values[i+1] + rewards[i] - values[i]
-            # R = args.gamma * R + rewards[i]
-            # advantage = R - values[i]
+            # advantage = args.gamma * values[i+1] + rewards[i] - values[i]
+            R = args.gamma * R + rewards[i]
+            advantage = R - values[i]
 
             policy_loss = policy_loss - \
                 log_probs[i] * advantage - 0.01 * entropies[i]
 
-        policy_loss = policy_loss.squeeze()
+        policy_loss = policy_loss.squeeze() / len(rewards)
         value_loss = model.get_loss_propogate(np.array(rewards), torch.cat(atoms_probs))        
         
         optimizer.zero_grad()
 
-        (policy_loss + 0.5 * value_loss).backward()
+        (policy_loss + value_loss).backward()
         torch.nn.utils.clip_grad_norm(model.parameters(), 40)
 
         ensure_shared_grads(model, shared_model)

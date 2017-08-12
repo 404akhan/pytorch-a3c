@@ -99,7 +99,7 @@ class ActorCritic(torch.nn.Module):
             m[range(bsize), l[:, i]] += probs_np[1:, i] * (u[:, i] - b[:, i])
             m[range(bsize), u[:, i]] += probs_np[1:, i] * (b[:, i] - l[:, i])
 
-        loss = - torch.sum(Variable(torch.from_numpy(m)) * torch.log(probs[:-1]))
+        loss = - torch.mean(Variable(torch.from_numpy(m)) * torch.log(probs[:-1]))
         return loss
 
 
@@ -125,7 +125,7 @@ class ActorCritic(torch.nn.Module):
             m[range(seq_len), l[:, i]] += probs_np[i] * (u[:, i] - b[:, i])
             m[range(seq_len), u[:, i]] += probs_np[i] * (b[:, i] - l[:, i])
 
-        loss = - torch.sum(Variable(torch.from_numpy(m)) * torch.log(probs[:-1]))
+        loss = - torch.mean(Variable(torch.from_numpy(m)) * torch.log(probs[:-1]))
         return loss
 
 
