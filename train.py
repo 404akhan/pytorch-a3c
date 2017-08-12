@@ -35,7 +35,7 @@ def train(rank, args, shared_model, optimizer=None):
     env = create_atari_env(args.env_name)
     env.seed(args.seed + rank)
 
-    model = ActorCritic(env.action_space.n, args.num_atoms)
+    model = ActorCritic(env.action_space.n, args.num_atoms, args.gamma)
 
     if optimizer is None:
         optimizer = optim.Adam(shared_model.parameters(), lr=args.lr)

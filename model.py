@@ -33,7 +33,7 @@ def weights_init(m):
 
 class ActorCritic(torch.nn.Module):
 
-    def __init__(self, num_actions, num_atoms):
+    def __init__(self, num_actions, num_atoms, gamma):
         super(ActorCritic, self).__init__()
         self.conv1 = nn.Conv2d(4, 32, 3, stride=2, padding=1)
         self.conv2 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
@@ -59,11 +59,11 @@ class ActorCritic(torch.nn.Module):
 
         self.train()
 
-        self.gamma = 0.99
+        self.gamma = gamma
         self.N = num_atoms
-        self.Vmax = int((self.N - 1) / 2)
+        self.Vmax = 10
         self.Vmin = -self.Vmax
-        self.dz = 1.
+        self.dz = (self.Vmax - self.Vmin) / (self.N - 1)
         self.z = np.linspace(self.Vmin, self.Vmax, self.N) #, dtype=np.int32)
 
 
