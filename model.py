@@ -40,9 +40,8 @@ class ActorCritic(torch.nn.Module):
         self.conv3 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
         self.conv4 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
 
-        # self.fc_critic = nn.Linear(32 * 3 * 3, 256)
-        # self.fc_actor = nn.Linear(32 * 3 * 3, 256)
-        self.fc = nn.Linear(32 * 3 * 3, 256)
+        self.fc_critic = nn.Linear(32 * 3 * 3, 256)
+        self.fc_actor = nn.Linear(32 * 3 * 3, 256)
 
         self.num_atoms = num_atoms
         self.num_outputs = num_actions
@@ -76,11 +75,10 @@ class ActorCritic(torch.nn.Module):
 
         x = x.view(-1, 32 * 3 * 3)
 
-        # x_critic = F.relu(self.fc_critic(x))
-        # x_actor = F.relu(self.fc_actor(x))
-        x = F.relu(self.fc(x))
+        x_critic = F.relu(self.fc_critic(x))
+        x_actor = F.relu(self.fc_actor(x))
 
-        return self.critic_linear(x), self.actor_linear(x)
+        return self.critic_linear(x_critic), self.actor_linear(x_actor)
 
 
     def get_loss(self, r, probs):
