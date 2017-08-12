@@ -113,7 +113,7 @@ class ActorCritic(torch.nn.Module):
         
         for i in reversed(range(seq_len)):
             R = R * self.gamma + r[i]
-            Tz[i] = np.clip(R, self.Vmin, Vmax)
+            Tz[i] = np.clip(R, self.Vmin, self.Vmax)
 
         b = (Tz - self.Vmin) / self.dz
         l, u = np.floor(b).astype(np.int32), np.ceil(b).astype(np.int32)
