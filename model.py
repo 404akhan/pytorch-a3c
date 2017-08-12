@@ -41,13 +41,13 @@ class ActorCritic(torch.nn.Module):
         self.conv4 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
 
         self.fc_critic = nn.Linear(32 * 3 * 3, 256)
-        self.fc_actor = nn.Linear(32 * 3 * 3, 256)
+        self.fc_actor = nn.Linear(32 * 3 * 3, 128)
 
         self.num_atoms = num_atoms
         self.num_outputs = num_actions
 
         self.critic_linear = nn.Linear(256, self.num_atoms)
-        self.actor_linear = nn.Linear(256, self.num_outputs)
+        self.actor_linear = nn.Linear(128, self.num_outputs)
 
         self.apply(weights_init)
 
