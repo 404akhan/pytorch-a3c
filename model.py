@@ -103,6 +103,32 @@ class ActorCritic(torch.nn.Module):
         return loss
 
 
+    def get_loss_propogate(self, r, probs):
+        # r         | numpy array (seq)
+        # probs     | pytorch Variable (seq+1 x 51)
+        # return    | loss ()
+        seq_len = r.shape[0]
+        R = self.z # 51
+        Tz = np.zeros((seq_len, self.N))
+        
+        for i in reversed(range(seq_len)):
+            R = R * self.gamma + r[i]
+            Tz[i] = np.clip(R, self.Vmin, Vmax)
+
+        b = (Tz - self.Vmin) / self.dz
+        l, u = np.floor(b).astype(np.int32), np.ceil(b).astype(np.int32)
+
+        m = np.zeros((seq_len, self.N), dtype=np.float32)
+        probs_np = probs.data.numpy()[-1] # last probabilities, shape=(51)
+        
+        for i in range(self.N):
+            m[range(seq_len), l[:, i]] += probs_np[i] * (u[:, i] - b[:, i])
+            m[range(seq_len), u[:, i]] += probs_np[i] * (b[:, i] - l[:, i])
+
+        loss = - torch.sum(Variable(torch.from_numpy(m)) * torch.log(probs[:-1]))
+        return loss
+
+
     def get_v(self, probs, batch=True):
         # probs     | pytorch Variable (bsize x 51)
         # return    | numpy array (bsize) or scalar

@@ -118,7 +118,7 @@ def train(rank, args, shared_model, optimizer=None):
                 log_probs[i] * advantage - 0.01 * entropies[i]
 
         policy_loss = policy_loss.squeeze()
-        value_loss = model.get_loss(np.array(rewards), torch.cat(atoms_probs))        
+        value_loss = model.get_loss_propogate(np.array(rewards), torch.cat(atoms_probs))        
         
         optimizer.zero_grad()
 
