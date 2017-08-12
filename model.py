@@ -33,7 +33,7 @@ def weights_init(m):
 
 class ActorCritic(torch.nn.Module):
 
-    def __init__(self, num_actions, num_atoms=21):
+    def __init__(self, num_actions, num_atoms):
         super(ActorCritic, self).__init__()
         self.conv1 = nn.Conv2d(4, 32, 3, stride=2, padding=1)
         self.conv2 = nn.Conv2d(32, 32, 3, stride=2, padding=1)

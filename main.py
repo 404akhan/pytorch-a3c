@@ -43,6 +43,8 @@ parser.add_argument('--load-dir',
                     help='load model from path')
 parser.add_argument('--testing', default=False,
                     help='to run model')
+parser.add_argument('--num-atoms', type=int, default=51,
+                    help='atoms of probability density')
 
 
 if __name__ == '__main__':
@@ -54,7 +56,7 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
 
     env = create_atari_env(args.env_name)
-    shared_model = ActorCritic(env.action_space.n)
+    shared_model = ActorCritic(env.action_space.n, args.num_atoms)
     shared_model.share_memory()
 
     if args.no_shared:

@@ -30,7 +30,7 @@ def test(rank, args, shared_model):
     env = create_atari_env(args.env_name)
     env.seed(args.seed + rank)
 
-    model = ActorCritic(env.action_space.n)
+    model = ActorCritic(env.action_space.n, args.num_atoms)
     
     model.eval()
 

@@ -35,7 +35,7 @@ def train(rank, args, shared_model, optimizer=None):
     env = create_atari_env(args.env_name)
     env.seed(args.seed + rank)
 
-    model = ActorCritic(env.action_space.n)
+    model = ActorCritic(env.action_space.n, args.num_atoms)
 
     if optimizer is None:
         optimizer = optim.Adam(shared_model.parameters(), lr=args.lr)
@@ -105,15 +105,18 @@ def train(rank, args, shared_model, optimizer=None):
             atoms_prob_last = F.softmax(atoms_logit)
             value_last = model.get_v(atoms_prob_last, batch=False)
 
+        R = value_last
         values.append(value_last)
         atoms_probs.append(atoms_prob_last)
         policy_loss = 0
         for i in reversed(range(len(rewards))):
             # todo, change to values[1:] * gamma + rewards - values[:-1]
-            advantage = args.gamma * values[i+1] + rewards[i] - values[i]
+            R = args.gamma * R + rewards[i]
+            advantage = R - values[i]
 
             policy_loss = policy_loss - \
                 log_probs[i] * advantage - 0.01 * entropies[i]
+
         policy_loss = policy_loss.squeeze()
         value_loss = model.get_loss(np.array(rewards), torch.cat(atoms_probs))        
         
