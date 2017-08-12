@@ -111,8 +111,9 @@ def train(rank, args, shared_model, optimizer=None):
         policy_loss = 0
         for i in reversed(range(len(rewards))):
             # todo, change to values[1:] * gamma + rewards - values[:-1]
-            R = args.gamma * R + rewards[i]
-            advantage = R - values[i]
+            advantage = args.gamma * values[i+1] + rewards[i] - values[i]
+            # R = args.gamma * R + rewards[i]
+            # advantage = R - values[i]
 
             policy_loss = policy_loss - \
                 log_probs[i] * advantage - 0.01 * entropies[i]
