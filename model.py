@@ -50,6 +50,13 @@ class ActorCritic(torch.nn.Module):
         self.actor_linear = nn.Linear(256, self.num_outputs)
 
         self.apply(weights_init)
+
+        self.critic_linear.weight.data = normalized_columns_initializer(self.critic_linear.weight.data, 0.003)
+        self.critic_linear.bias.data.fill_(0)
+ 
+        self.actor_linear.weight.data = normalized_columns_initializer(self.actor_linear.weight.data, 0.01)
+        self.actor_linear.bias.data.fill_(0)
+
         self.train()
 
         self.gamma = gamma

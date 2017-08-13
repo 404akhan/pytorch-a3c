@@ -30,8 +30,12 @@ def test(rank, args, shared_model):
     env = create_atari_env(args.env_name)
     env.seed(args.seed + rank)
 
-    model = ActorCritic(env.action_space.n, args.num_atoms, args.gamma)
-    
+    if not os.path.exists('model-a3c-aux'):
+        os.makedirs('model-a3c-aux')
+    path = 'model-a3c-aux/model-{}.pth'.format(args.model_name)
+    print('saving directory is', path)
+
+    model = ActorCritic(env.action_space.n, args.num_atoms, args.gamma)  
     model.eval()
 
     state = env.reset()
@@ -49,11 +53,8 @@ def test(rank, args, shared_model):
         if done:
             model.load_state_dict(shared_model.state_dict())
             
-            if not os.path.exists('model-a3c-aux'):
-                os.makedirs('model-a3c-aux')
-            path = 'model-a3c-aux/model-{}.pth'.format(args.model_name)
             torch.save(shared_model.state_dict(), path)
-            print('saved model at', path)
+            print('saved model')
 
         _, logit = model(Variable(state.unsqueeze(0), volatile=True))
         prob = F.softmax(logit)
