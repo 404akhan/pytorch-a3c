@@ -41,7 +41,8 @@ class ActorCritic(torch.nn.Module):
         self.conv3 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
         self.conv4 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
 
-        self.fc = nn.Linear(32 * 3 * 3, 256)
+        self.fc_critic = nn.Linear(32 * 3 * 3, 256)
+        self.fc_actor = nn.Linear(32 * 3 * 3, 256)
 
         num_outputs = action_space.n + aux_actions
         self.critic_linear = nn.Linear(256, 1)
@@ -67,6 +68,12 @@ class ActorCritic(torch.nn.Module):
         x = F.relu(self.conv4(x))
 
         x = x.view(-1, 32 * 3 * 3)
-        x = F.relu(self.fc(x))
 
-        return self.critic_linear(x), self.actor_linear(x)
+        x_critic = F.relu(self.fc_critic(x))
+        x_actor = F.relu(self.fc_actor(x))
+
+        return self.critic_linear(x_critic), self.actor_linear(x_actor)
+        
+        # x = F.relu(self.fc(x))
+
+        # return self.critic_linear(x), self.actor_linear(x)
