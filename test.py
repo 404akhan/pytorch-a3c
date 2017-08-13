@@ -14,6 +14,7 @@ import time
 from collections import deque
 
 import numpy as np 
+import matplotlib.pyplot as plt 
 
 def is_dead(info):
     dead = False
@@ -56,7 +57,7 @@ def test(rank, args, shared_model):
             torch.save(shared_model.state_dict(), path)
             print('saved model')
 
-        _, logit = model(Variable(state.unsqueeze(0), volatile=True))
+        atoms_logit, logit = model(Variable(state.unsqueeze(0), volatile=True))
         prob = F.softmax(logit)
         action = prob.max(1)[1].data.numpy()
 
@@ -67,7 +68,16 @@ def test(rank, args, shared_model):
         dead = is_dead(info)
         
         if args.testing: 
-            print('episode', episode_length, 'normal action', action_np, 'lives', info['ale.lives'])
+            atoms_prob = F.softmax(atoms_logit)
+            value = model.get_v(atoms_prob, batch=False)
+            atoms_prob = atoms_prob.squeeze().data.numpy()
+
+            if ep_counter % 100 == 0:
+                plt.plot(model.z, atoms_prob)
+                plt.title('average v is {}'.format(value))
+                plt.show()
+
+            print('episode', episode_length, 'normal action', action_np, 'lives', info['ale.lives'], 'value', value)
             env.render()
         state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
         done = done or episode_length >= args.max_episode_length

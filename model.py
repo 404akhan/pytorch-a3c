@@ -81,7 +81,7 @@ class ActorCritic(torch.nn.Module):
         return self.critic_linear(x_critic), self.actor_linear(x_actor)
 
 
-    def get_loss(self, r, probs):
+    def get_loss_next_step(self, r, probs): # this loss is worse than get_loss_propogate 
         # r         | numpy array (bsize)
         # probs     | pytorch Variable (bsize+1 x 51)
         # return    | loss ()

@@ -110,8 +110,8 @@ def train(rank, args, shared_model, optimizer=None):
         atoms_probs.append(atoms_prob_last)
         policy_loss = 0
         for i in reversed(range(len(rewards))):
-            # todo, change to values[1:] * gamma + rewards - values[:-1]
-            # advantage = args.gamma * values[i+1] + rewards[i] - values[i]
+            # advantage = args.gamma * values[i+1] + rewards[i] - values[i] # this update is worse than below
+
             R = args.gamma * R + rewards[i]
             advantage = R - values[i]
 
