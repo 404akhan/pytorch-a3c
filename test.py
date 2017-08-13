@@ -51,8 +51,9 @@ def test(rank, args, shared_model):
             
             if not os.path.exists('model-a3c-aux'):
                 os.makedirs('model-a3c-aux')
-            torch.save(shared_model.state_dict(), 'model-a3c-aux/model-{}.pth'.format(args.model_name))
-            print('saved model')
+            path = 'model-a3c-aux/model-{}.pth'.format(args.model_name)
+            torch.save(shared_model.state_dict(), path)
+            print('saved model at', path)
 
         _, logit = model(Variable(state.unsqueeze(0), volatile=True))
         prob = F.softmax(logit)
