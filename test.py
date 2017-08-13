@@ -72,13 +72,13 @@ def test(rank, args, shared_model):
             value = model.get_v(atoms_prob, batch=False)
             atoms_prob = atoms_prob.squeeze().data.numpy()
 
+            print('episode', episode_length, 'normal action', action_np, 'lives', info['ale.lives'], 'value', value)
+            env.render()
+
             if ep_counter % 100 == 0:
                 plt.plot(model.z, atoms_prob)
                 plt.title('average v is {}'.format(value))
                 plt.show()
-
-            print('episode', episode_length, 'normal action', action_np, 'lives', info['ale.lives'], 'value', value)
-            env.render()
         state = np.append(state.numpy()[1:,:,:], state_new, axis=0)
         done = done or episode_length >= args.max_episode_length
 
