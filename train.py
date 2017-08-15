@@ -85,11 +85,11 @@ def train(rank, args, shared_model, optimizer=None):
                     state = np.append(state[1:,:,:], state_new, axis=0) 
                     done = done or episode_length >= args.max_episode_length
 
+                    rew = max(min(rew, 1), -1)
                     reward += rew
                     episode_length += 1
                     if done or dead:
                         break
-                reward = max(min(reward, 1), -1)
 
             if done:
                 episode_length = 0
