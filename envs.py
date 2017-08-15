@@ -1,6 +1,9 @@
 import gym
 import numpy as np
+import universe
 from gym.spaces.box import Box
+from universe import vectorized
+from universe.wrappers import Unvectorize, Vectorize
 
 import cv2
 from skimage.color import rgb2gray
