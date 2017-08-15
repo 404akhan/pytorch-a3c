@@ -79,7 +79,7 @@ def train(rank, args, shared_model, optimizer=None):
             else:
                 state = state.numpy()
                 reward = 0.
-                for _ in range(action_np - model.n_real_acts + 2):
+                for _ in range(model.get_skip(action_np)):
                     state_new, rew, done, info = env.step(0)  # instead of random perform NOOP=0
                     dead = is_dead(info)
                     state = np.append(state[1:,:,:], state_new, axis=0) 
