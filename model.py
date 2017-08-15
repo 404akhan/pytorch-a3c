@@ -72,10 +72,10 @@ class ActorCritic(torch.nn.Module):
         return self.critic_linear(x), self.actor_linear(x)
 
     def get_skip(self, action_np):
-        if action_np == model.n_real_acts:
+        if action_np == self.n_real_acts:
             return 2
-        if action_np == model.n_real_acts + 1:
+        if action_np == self.n_real_acts + 1:
             return 4
-        if action_np == model.n_real_acts + 2:
+        if action_np == self.n_real_acts + 2:
             return 8
         raise NotImplementedError
