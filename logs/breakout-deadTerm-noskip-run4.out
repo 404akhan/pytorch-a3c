@@ -1,0 +1,712 @@
+Namespace(env_name='BreakoutDeterministic-v4', gamma=0.99, load_dir=None, lr=0.0001, max_episode_length=10000, model_name='breakout-deadTerm-noskip-run4', no_shared=False, num_processes=16, num_skips=0, num_steps=20, seed=1, tau=1.0, testing=False)
+[2017-08-16 01:14:19,941] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,197] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,199] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,201] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,203] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,205] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,207] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,209] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,211] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,213] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,215] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,217] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,219] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,221] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,223] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,226] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,228] Making new env: BreakoutDeterministic-v4
+[2017-08-16 01:14:20,230] Making new env: BreakoutDeterministic-v4
+saved model
+Time 00h 00m 23s, episode reward 0.0, episode length 10001
+actions stats real [0, 0, 10001, 0], aux []
+saved model
+Time 00h 01m 46s, episode reward 0.0, episode length 10001
+actions stats real [0, 0, 0, 10001], aux []
+saved model
+Time 00h 03m 10s, episode reward 0.0, episode length 10001
+actions stats real [0, 0, 0, 10001], aux []
+saved model
+Time 00h 04m 33s, episode reward 0.0, episode length 10001
+actions stats real [0, 0, 0, 10001], aux []
+saved model
+Time 00h 05m 34s, episode reward 4.0, episode length 268
+actions stats real [10, 156, 28, 74], aux []
+saved model
+Time 00h 06m 35s, episode reward 4.0, episode length 259
+actions stats real [0, 214, 17, 28], aux []
+saved model
+Time 00h 07m 58s, episode reward 2.0, episode length 10001
+actions stats real [1987, 7, 3996, 4011], aux []
+saved model
+Time 00h 08m 59s, episode reward 4.0, episode length 262
+actions stats real [0, 154, 47, 61], aux []
+saved model
+Time 00h 10m 00s, episode reward 4.0, episode length 282
+actions stats real [11, 182, 40, 49], aux []
+saved model
+Time 00h 11m 01s, episode reward 6.0, episode length 348
+actions stats real [21, 110, 102, 115], aux []
+saved model
+Time 00h 12m 02s, episode reward 5.0, episode length 309
+actions stats real [0, 242, 30, 37], aux []
+saved model
+Time 00h 13m 25s, episode reward 0.0, episode length 10001
+actions stats real [10001, 0, 0, 0], aux []
+saved model
+Time 00h 14m 49s, episode reward 0.0, episode length 10001
+actions stats real [0, 0, 0, 10001], aux []
+saved model
+Time 00h 15m 50s, episode reward 16.0, episode length 569
+actions stats real [64, 201, 129, 175], aux []
+saved model
+Time 00h 17m 14s, episode reward 19.0, episode length 10001
+actions stats real [1, 90, 4916, 4994], aux []
+saved model
+Time 00h 18m 37s, episode reward 19.0, episode length 10001
+actions stats real [46, 224, 4852, 4879], aux []
+saved model
+Time 00h 19m 38s, episode reward 22.0, episode length 589
+actions stats real [51, 245, 102, 191], aux []
+saved model
+Time 00h 20m 40s, episode reward 34.0, episode length 680
+actions stats real [15, 170, 226, 269], aux []
+saved model
+Time 00h 21m 41s, episode reward 4.0, episode length 257
+actions stats real [25, 153, 39, 40], aux []
+saved model
+Time 00h 22m 43s, episode reward 27.0, episode length 735
+actions stats real [43, 261, 189, 242], aux []
+saved model
+Time 00h 23m 45s, episode reward 34.0, episode length 855
+actions stats real [39, 179, 286, 351], aux []
+saved model
+Time 00h 24m 48s, episode reward 24.0, episode length 766
+actions stats real [93, 388, 133, 152], aux []
+saved model
+Time 00h 25m 50s, episode reward 30.0, episode length 719
+actions stats real [27, 309, 166, 217], aux []
+saved model
+Time 00h 26m 52s, episode reward 45.0, episode length 1036
+actions stats real [104, 250, 332, 350], aux []
+saved model
+Time 00h 27m 54s, episode reward 25.0, episode length 768
+actions stats real [135, 310, 163, 160], aux []
+saved model
+Time 00h 29m 18s, episode reward 8.0, episode length 10001
+actions stats real [19, 69, 4937, 4976], aux []
+saved model
+Time 00h 30m 21s, episode reward 49.0, episode length 1172
+actions stats real [1, 536, 290, 345], aux []
+saved model
+Time 00h 31m 44s, episode reward 32.0, episode length 10001
+actions stats real [103, 72, 4896, 4930], aux []
+saved model
+Time 00h 32m 46s, episode reward 15.0, episode length 533
+actions stats real [84, 260, 90, 99], aux []
+saved model
+Time 00h 33m 48s, episode reward 28.0, episode length 989
+actions stats real [98, 315, 264, 312], aux []
+saved model
+Time 00h 34m 50s, episode reward 20.0, episode length 641
+actions stats real [290, 132, 95, 124], aux []
+saved model
+Time 00h 35m 52s, episode reward 19.0, episode length 828
+actions stats real [50, 239, 210, 329], aux []
+saved model
+Time 00h 36m 55s, episode reward 37.0, episode length 1072
+actions stats real [93, 231, 303, 445], aux []
+saved model
+Time 00h 37m 59s, episode reward 71.0, episode length 1355
+actions stats real [63, 329, 392, 571], aux []
+saved model
+Time 00h 39m 02s, episode reward 65.0, episode length 1218
+actions stats real [163, 58, 415, 582], aux []
+saved model
+Time 00h 40m 05s, episode reward 45.0, episode length 1153
+actions stats real [150, 142, 332, 529], aux []
+saved model
+Time 00h 41m 08s, episode reward 43.0, episode length 1253
+actions stats real [220, 186, 356, 491], aux []
+saved model
+Time 00h 42m 10s, episode reward 36.0, episode length 782
+actions stats real [24, 427, 149, 182], aux []
+saved model
+Time 00h 43m 14s, episode reward 53.0, episode length 1245
+actions stats real [107, 321, 390, 427], aux []
+saved model
+Time 00h 44m 17s, episode reward 68.0, episode length 1456
+actions stats real [619, 177, 309, 351], aux []
+saved model
+Time 00h 45m 21s, episode reward 49.0, episode length 1205
+actions stats real [227, 349, 231, 398], aux []
+saved model
+Time 00h 46m 24s, episode reward 62.0, episode length 1359
+actions stats real [149, 560, 275, 375], aux []
+saved model
+Time 00h 47m 27s, episode reward 27.0, episode length 932
+actions stats real [165, 300, 227, 240], aux []
+saved model
+Time 00h 48m 31s, episode reward 116.0, episode length 1567
+actions stats real [365, 416, 333, 453], aux []
+saved model
+Time 00h 49m 34s, episode reward 50.0, episode length 1272
+actions stats real [276, 533, 191, 272], aux []
+saved model
+Time 00h 50m 38s, episode reward 58.0, episode length 1354
+actions stats real [129, 544, 307, 374], aux []
+saved model
+Time 00h 51m 41s, episode reward 66.0, episode length 1342
+actions stats real [502, 478, 153, 209], aux []
+saved model
+Time 00h 52m 44s, episode reward 57.0, episode length 1267
+actions stats real [90, 587, 234, 356], aux []
+saved model
+Time 00h 53m 49s, episode reward 83.0, episode length 1567
+actions stats real [627, 329, 278, 333], aux []
+saved model
+Time 00h 54m 52s, episode reward 68.0, episode length 1413
+actions stats real [526, 346, 210, 331], aux []
+saved model
+Time 00h 55m 55s, episode reward 63.0, episode length 1104
+actions stats real [102, 476, 226, 300], aux []
+saved model
+Time 00h 56m 59s, episode reward 77.0, episode length 1409
+actions stats real [655, 328, 196, 230], aux []
+saved model
+Time 00h 58m 02s, episode reward 33.0, episode length 1069
+actions stats real [46, 672, 175, 176], aux []
+saved model
+Time 00h 59m 05s, episode reward 71.0, episode length 1326
+actions stats real [250, 328, 292, 456], aux []
+saved model
+Time 01h 00m 09s, episode reward 86.0, episode length 1496
+actions stats real [32, 874, 271, 319], aux []
+saved model
+Time 01h 01m 13s, episode reward 82.0, episode length 1434
+actions stats real [130, 588, 293, 423], aux []
+saved model
+Time 01h 02m 16s, episode reward 64.0, episode length 1047
+actions stats real [286, 139, 306, 316], aux []
+saved model
+Time 01h 03m 20s, episode reward 137.0, episode length 1574
+actions stats real [669, 195, 296, 414], aux []
+saved model
+Time 01h 04m 26s, episode reward 295.0, episode length 2341
+actions stats real [440, 446, 602, 853], aux []
+saved model
+Time 01h 05m 29s, episode reward 80.0, episode length 1047
+actions stats real [205, 124, 303, 415], aux []
+saved model
+Time 01h 06m 32s, episode reward 87.0, episode length 1406
+actions stats real [33, 444, 413, 516], aux []
+saved model
+Time 01h 07m 36s, episode reward 85.0, episode length 1448
+actions stats real [371, 720, 160, 197], aux []
+saved model
+Time 01h 08m 40s, episode reward 102.0, episode length 1596
+actions stats real [95, 502, 476, 523], aux []
+saved model
+Time 01h 09m 44s, episode reward 70.0, episode length 1319
+actions stats real [108, 373, 411, 427], aux []
+saved model
+Time 01h 10m 48s, episode reward 193.0, episode length 1766
+actions stats real [1, 1071, 326, 368], aux []
+saved model
+Time 01h 11m 51s, episode reward 50.0, episode length 1150
+actions stats real [42, 525, 283, 300], aux []
+saved model
+Time 01h 13m 15s, episode reward 91.0, episode length 10001
+actions stats real [160, 57, 4818, 4966], aux []
+saved model
+Time 01h 14m 19s, episode reward 115.0, episode length 1465
+actions stats real [143, 428, 390, 504], aux []
+saved model
+Time 01h 15m 23s, episode reward 92.0, episode length 1418
+actions stats real [281, 541, 228, 368], aux []
+saved model
+Time 01h 16m 47s, episode reward 231.0, episode length 10001
+actions stats real [376, 79, 318, 9228], aux []
+saved model
+Time 01h 17m 50s, episode reward 104.0, episode length 1507
+actions stats real [566, 203, 330, 408], aux []
+saved model
+Time 01h 18m 55s, episode reward 315.0, episode length 1721
+actions stats real [432, 427, 368, 494], aux []
+saved model
+Time 01h 19m 58s, episode reward 76.0, episode length 1217
+actions stats real [81, 546, 253, 337], aux []
+saved model
+Time 01h 21m 02s, episode reward 75.0, episode length 1404
+actions stats real [85, 489, 363, 467], aux []
+saved model
+Time 01h 22m 06s, episode reward 103.0, episode length 1691
+actions stats real [258, 431, 477, 525], aux []
+saved model
+Time 01h 23m 11s, episode reward 336.0, episode length 1794
+actions stats real [543, 591, 312, 348], aux []
+saved model
+Time 01h 24m 14s, episode reward 209.0, episode length 1297
+actions stats real [300, 680, 153, 164], aux []
+saved model
+Time 01h 25m 18s, episode reward 124.0, episode length 1441
+actions stats real [214, 167, 410, 650], aux []
+saved model
+Time 01h 26m 42s, episode reward 5.0, episode length 10001
+actions stats real [6, 45, 4913, 5037], aux []
+saved model
+Time 01h 27m 45s, episode reward 60.0, episode length 1391
+actions stats real [51, 545, 316, 479], aux []
+saved model
+Time 01h 28m 50s, episode reward 133.0, episode length 1809
+actions stats real [340, 839, 279, 351], aux []
+saved model
+Time 01h 29m 54s, episode reward 157.0, episode length 1569
+actions stats real [19, 942, 286, 322], aux []
+saved model
+Time 01h 31m 18s, episode reward 209.0, episode length 10001
+actions stats real [9132, 78, 270, 521], aux []
+saved model
+Time 01h 32m 21s, episode reward 33.0, episode length 1014
+actions stats real [57, 294, 300, 363], aux []
+saved model
+Time 01h 33m 26s, episode reward 355.0, episode length 1876
+actions stats real [196, 877, 321, 482], aux []
+saved model
+Time 01h 34m 30s, episode reward 93.0, episode length 1546
+actions stats real [124, 653, 331, 438], aux []
+saved model
+Time 01h 35m 34s, episode reward 86.0, episode length 1290
+actions stats real [75, 642, 279, 294], aux []
+saved model
+Time 01h 36m 37s, episode reward 90.0, episode length 1329
+actions stats real [38, 682, 275, 334], aux []
+saved model
+Time 01h 37m 41s, episode reward 129.0, episode length 1456
+actions stats real [242, 556, 306, 352], aux []
+saved model
+Time 01h 38m 47s, episode reward 419.0, episode length 2184
+actions stats real [81, 1409, 315, 379], aux []
+saved model
+Time 01h 39m 50s, episode reward 81.0, episode length 1371
+actions stats real [130, 276, 439, 526], aux []
+saved model
+Time 01h 40m 51s, episode reward 3.0, episode length 227
+actions stats real [0, 199, 26, 2], aux []
+saved model
+Time 01h 41m 56s, episode reward 282.0, episode length 1707
+actions stats real [476, 480, 321, 430], aux []
+saved model
+Time 01h 43m 21s, episode reward 341.0, episode length 10001
+actions stats real [1817, 5454, 1315, 1415], aux []
+saved model
+Time 01h 44m 24s, episode reward 115.0, episode length 1424
+actions stats real [134, 225, 469, 596], aux []
+saved model
+Time 01h 45m 48s, episode reward 192.0, episode length 10001
+actions stats real [5565, 118, 2077, 2241], aux []
+saved model
+Time 01h 46m 53s, episode reward 325.0, episode length 1742
+actions stats real [181, 756, 302, 503], aux []
+saved model
+Time 01h 47m 56s, episode reward 108.0, episode length 1251
+actions stats real [579, 189, 210, 273], aux []
+saved model
+Time 01h 48m 59s, episode reward 39.0, episode length 1098
+actions stats real [484, 248, 176, 190], aux []
+saved model
+Time 01h 50m 04s, episode reward 417.0, episode length 1893
+actions stats real [41, 951, 346, 555], aux []
+saved model
+Time 01h 51m 07s, episode reward 69.0, episode length 901
+actions stats real [73, 308, 212, 308], aux []
+saved model
+Time 01h 52m 10s, episode reward 124.0, episode length 1502
+actions stats real [75, 443, 471, 513], aux []
+saved model
+Time 01h 53m 34s, episode reward 241.0, episode length 10001
+actions stats real [169, 201, 502, 9129], aux []
+saved model
+Time 01h 54m 38s, episode reward 77.0, episode length 1383
+actions stats real [739, 234, 195, 215], aux []
+saved model
+Time 01h 55m 53s, episode reward 484.0, episode length 5938
+actions stats real [1702, 834, 1559, 1843], aux []
+saved model
+Time 01h 57m 07s, episode reward 348.0, episode length 6013
+actions stats real [152, 626, 2541, 2694], aux []
+saved model
+Time 01h 58m 12s, episode reward 158.0, episode length 1716
+actions stats real [462, 307, 265, 682], aux []
+saved model
+Time 01h 59m 16s, episode reward 111.0, episode length 1498
+actions stats real [356, 357, 359, 426], aux []
+saved model
+Time 02h 00m 19s, episode reward 118.0, episode length 1296
+actions stats real [269, 415, 291, 321], aux []
+saved model
+Time 02h 01m 23s, episode reward 331.0, episode length 1692
+actions stats real [720, 449, 221, 302], aux []
+saved model
+Time 02h 02m 28s, episode reward 386.0, episode length 1833
+actions stats real [615, 170, 462, 586], aux []
+saved model
+Time 02h 03m 52s, episode reward 265.0, episode length 10001
+actions stats real [3563, 67, 3151, 3220], aux []
+saved model
+Time 02h 05m 17s, episode reward 229.0, episode length 10001
+actions stats real [9268, 37, 279, 417], aux []
+saved model
+Time 02h 06m 41s, episode reward 304.0, episode length 10001
+actions stats real [6558, 78, 1668, 1697], aux []
+saved model
+Time 02h 08m 05s, episode reward 349.0, episode length 10001
+actions stats real [2174, 435, 3656, 3736], aux []
+saved model
+Time 02h 09m 29s, episode reward 235.0, episode length 10001
+actions stats real [9627, 59, 152, 163], aux []
+saved model
+Time 02h 10m 52s, episode reward 273.0, episode length 10001
+actions stats real [95, 689, 2447, 6770], aux []
+saved model
+Time 02h 12m 16s, episode reward 231.0, episode length 10001
+actions stats real [94, 151, 4263, 5493], aux []
+saved model
+Time 02h 13m 20s, episode reward 104.0, episode length 1311
+actions stats real [726, 120, 209, 256], aux []
+saved model
+Time 02h 14m 24s, episode reward 219.0, episode length 1586
+actions stats real [339, 636, 306, 305], aux []
+saved model
+Time 02h 15m 29s, episode reward 184.0, episode length 1820
+actions stats real [138, 470, 575, 637], aux []
+saved model
+Time 02h 16m 33s, episode reward 199.0, episode length 1766
+actions stats real [425, 216, 506, 619], aux []
+saved model
+Time 02h 17m 38s, episode reward 188.0, episode length 1791
+actions stats real [223, 452, 487, 629], aux []
+saved model
+Time 02h 18m 42s, episode reward 124.0, episode length 1614
+actions stats real [20, 790, 345, 459], aux []
+saved model
+Time 02h 20m 06s, episode reward 107.0, episode length 10001
+actions stats real [508, 141, 4613, 4739], aux []
+saved model
+Time 02h 21m 10s, episode reward 64.0, episode length 1411
+actions stats real [15, 611, 382, 403], aux []
+saved model
+Time 02h 22m 14s, episode reward 89.0, episode length 1460
+actions stats real [26, 483, 463, 488], aux []
+saved model
+Time 02h 23m 38s, episode reward 186.0, episode length 10001
+actions stats real [301, 267, 4691, 4742], aux []
+saved model
+Time 02h 24m 42s, episode reward 147.0, episode length 1317
+actions stats real [604, 246, 201, 266], aux []
+saved model
+Time 02h 26m 05s, episode reward 320.0, episode length 10001
+actions stats real [4359, 1429, 2075, 2138], aux []
+saved model
+Time 02h 27m 28s, episode reward 294.0, episode length 10001
+actions stats real [1500, 807, 3790, 3904], aux []
+saved model
+Time 02h 28m 52s, episode reward 221.0, episode length 10001
+actions stats real [59, 312, 4784, 4846], aux []
+saved model
+Time 02h 29m 59s, episode reward 407.0, episode length 2659
+actions stats real [270, 931, 624, 834], aux []
+saved model
+Time 02h 31m 02s, episode reward 91.0, episode length 1414
+actions stats real [56, 549, 349, 460], aux []
+saved model
+Time 02h 32m 26s, episode reward 256.0, episode length 10001
+actions stats real [159, 216, 4629, 4997], aux []
+saved model
+Time 02h 33m 43s, episode reward 340.0, episode length 7448
+actions stats real [8, 694, 3283, 3463], aux []
+saved model
+Time 02h 34m 48s, episode reward 297.0, episode length 1851
+actions stats real [875, 99, 416, 461], aux []
+saved model
+Time 02h 36m 12s, episode reward 84.0, episode length 10001
+actions stats real [149, 156, 4752, 4944], aux []
+saved model
+Time 02h 37m 36s, episode reward 255.0, episode length 10001
+actions stats real [523, 211, 4584, 4683], aux []
+saved model
+Time 02h 38m 41s, episode reward 277.0, episode length 1659
+actions stats real [431, 40, 508, 680], aux []
+saved model
+Time 02h 40m 05s, episode reward 245.0, episode length 10001
+actions stats real [1317, 42, 4219, 4423], aux []
+saved model
+Time 02h 41m 28s, episode reward 180.0, episode length 10001
+actions stats real [3488, 256, 3105, 3152], aux []
+saved model
+Time 02h 42m 52s, episode reward 345.0, episode length 10001
+actions stats real [202, 3929, 2912, 2958], aux []
+saved model
+Time 02h 44m 16s, episode reward 325.0, episode length 10001
+actions stats real [231, 26, 4643, 5101], aux []
+saved model
+Time 02h 45m 19s, episode reward 353.0, episode length 1167
+actions stats real [230, 248, 275, 414], aux []
+saved model
+Time 02h 46m 44s, episode reward 245.0, episode length 10001
+actions stats real [1904, 296, 3888, 3913], aux []
+saved model
+Time 02h 48m 08s, episode reward 239.0, episode length 10001
+actions stats real [562, 93, 4654, 4692], aux []
+saved model
+Time 02h 49m 12s, episode reward 100.0, episode length 1643
+actions stats real [82, 607, 435, 519], aux []
+saved model
+Time 02h 50m 36s, episode reward 265.0, episode length 10001
+actions stats real [2656, 194, 2527, 4624], aux []
+saved model
+Time 02h 51m 59s, episode reward 345.0, episode length 10001
+actions stats real [9226, 241, 259, 275], aux []
+saved model
+Time 02h 53m 22s, episode reward 230.0, episode length 10001
+actions stats real [424, 182, 4652, 4743], aux []
+saved model
+Time 02h 54m 45s, episode reward 299.0, episode length 10001
+actions stats real [7949, 522, 705, 825], aux []
+saved model
+Time 02h 56m 08s, episode reward 368.0, episode length 10001
+actions stats real [8908, 597, 245, 251], aux []
+saved model
+Time 02h 57m 31s, episode reward 363.0, episode length 10001
+actions stats real [912, 6000, 1538, 1551], aux []
+saved model
+Time 02h 58m 36s, episode reward 417.0, episode length 1967
+actions stats real [245, 381, 601, 740], aux []
+saved model
+Time 02h 59m 59s, episode reward 139.0, episode length 10001
+actions stats real [100, 320, 4784, 4797], aux []
+saved model
+Time 03h 01m 22s, episode reward 399.0, episode length 10001
+actions stats real [296, 3653, 2781, 3271], aux []
+saved model
+Time 03h 02m 27s, episode reward 422.0, episode length 2188
+actions stats real [425, 467, 591, 705], aux []
+saved model
+Time 03h 03m 46s, episode reward 428.0, episode length 8417
+actions stats real [1114, 1068, 3073, 3162], aux []
+saved model
+Time 03h 04m 50s, episode reward 99.0, episode length 1420
+actions stats real [676, 102, 270, 372], aux []
+saved model
+Time 03h 06m 13s, episode reward 224.0, episode length 10001
+actions stats real [394, 199, 4308, 5100], aux []
+saved model
+Time 03h 07m 16s, episode reward 157.0, episode length 1184
+actions stats real [609, 235, 147, 193], aux []
+saved model
+Time 03h 08m 40s, episode reward 304.0, episode length 10001
+actions stats real [263, 194, 280, 9264], aux []
+saved model
+Time 03h 10m 03s, episode reward 89.0, episode length 10001
+actions stats real [205, 142, 4661, 4993], aux []
+saved model
+Time 03h 11m 26s, episode reward 293.0, episode length 10001
+actions stats real [9171, 193, 295, 342], aux []
+saved model
+Time 03h 12m 30s, episode reward 285.0, episode length 1527
+actions stats real [405, 517, 265, 340], aux []
+saved model
+Time 03h 13m 53s, episode reward 164.0, episode length 10001
+actions stats real [4428, 884, 2332, 2357], aux []
+saved model
+Time 03h 15m 17s, episode reward 302.0, episode length 10001
+actions stats real [9084, 570, 145, 202], aux []
+saved model
+Time 03h 16m 40s, episode reward 384.0, episode length 10001
+actions stats real [14, 4025, 2964, 2998], aux []
+saved model
+Time 03h 18m 03s, episode reward 367.0, episode length 10001
+actions stats real [9444, 198, 164, 195], aux []
+saved model
+Time 03h 19m 26s, episode reward 406.0, episode length 10001
+actions stats real [8543, 295, 569, 594], aux []
+saved model
+Time 03h 20m 31s, episode reward 445.0, episode length 2286
+actions stats real [204, 998, 517, 567], aux []
+saved model
+Time 03h 21m 54s, episode reward 286.0, episode length 10001
+actions stats real [9579, 23, 114, 285], aux []
+saved model
+Time 03h 23m 17s, episode reward 378.0, episode length 10001
+actions stats real [8927, 261, 266, 547], aux []
+saved model
+Time 03h 24m 23s, episode reward 428.0, episode length 2133
+actions stats real [136, 1147, 254, 596], aux []
+saved model
+Time 03h 25m 46s, episode reward 345.0, episode length 10001
+actions stats real [267, 492, 4597, 4645], aux []
+saved model
+Time 03h 27m 09s, episode reward 362.0, episode length 10001
+actions stats real [2376, 1413, 2957, 3255], aux []
+saved model
+Time 03h 28m 32s, episode reward 268.0, episode length 10001
+actions stats real [458, 305, 4568, 4670], aux []
+saved model
+Time 03h 29m 55s, episode reward 352.0, episode length 10001
+actions stats real [2072, 176, 3820, 3933], aux []
+saved model
+Time 03h 31m 20s, episode reward 236.0, episode length 10001
+actions stats real [148, 293, 2492, 7068], aux []
+saved model
+Time 03h 32m 43s, episode reward 290.0, episode length 10001
+actions stats real [1520, 118, 4166, 4197], aux []
+saved model
+Time 03h 34m 07s, episode reward 166.0, episode length 10001
+actions stats real [9503, 240, 122, 136], aux []
+saved model
+Time 03h 35m 11s, episode reward 153.0, episode length 1650
+actions stats real [348, 269, 504, 529], aux []
+saved model
+Time 03h 36m 36s, episode reward 343.0, episode length 10001
+actions stats real [106, 568, 4553, 4774], aux []
+saved model
+Time 03h 38m 00s, episode reward 214.0, episode length 10001
+actions stats real [2, 231, 312, 9456], aux []
+saved model
+Time 03h 39m 04s, episode reward 269.0, episode length 1557
+actions stats real [1112, 19, 199, 227], aux []
+saved model
+Time 03h 40m 29s, episode reward 351.0, episode length 10001
+actions stats real [889, 6569, 1088, 1455], aux []
+saved model
+Time 03h 41m 35s, episode reward 407.0, episode length 2112
+actions stats real [7, 1542, 249, 314], aux []
+saved model
+Time 03h 42m 40s, episode reward 336.0, episode length 1713
+actions stats real [102, 434, 566, 611], aux []
+saved model
+Time 03h 43m 45s, episode reward 105.0, episode length 1447
+actions stats real [865, 138, 226, 218], aux []
+saved model
+Time 03h 44m 52s, episode reward 345.0, episode length 2134
+actions stats real [350, 1000, 385, 399], aux []
+saved model
+Time 03h 46m 21s, episode reward 432.0, episode length 10001
+actions stats real [383, 872, 4344, 4402], aux []
+saved model
+Time 03h 47m 54s, episode reward 274.0, episode length 10001
+actions stats real [233, 666, 4526, 4576], aux []
+saved model
+Time 03h 48m 58s, episode reward 78.0, episode length 1179
+actions stats real [115, 571, 245, 248], aux []
+saved model
+Time 03h 50m 28s, episode reward 373.0, episode length 10001
+actions stats real [2169, 815, 3078, 3939], aux []
+saved model
+Time 03h 52m 00s, episode reward 197.0, episode length 10001
+actions stats real [320, 221, 3203, 6257], aux []
+saved model
+Time 03h 53m 32s, episode reward 168.0, episode length 10001
+actions stats real [499, 226, 235, 9041], aux []
+saved model
+Time 03h 55m 02s, episode reward 395.0, episode length 10001
+actions stats real [2037, 205, 3717, 4042], aux []
+saved model
+Time 03h 56m 33s, episode reward 276.0, episode length 10001
+actions stats real [2693, 2470, 1666, 3172], aux []
+saved model
+Time 03h 58m 05s, episode reward 50.0, episode length 10001
+actions stats real [354, 257, 4694, 4696], aux []
+saved model
+Time 03h 59m 38s, episode reward 138.0, episode length 10001
+actions stats real [280, 235, 98, 9388], aux []
+saved model
+Time 04h 00m 44s, episode reward 420.0, episode length 1910
+actions stats real [83, 1064, 327, 436], aux []
+saved model
+Time 04h 02m 14s, episode reward 408.0, episode length 10001
+actions stats real [1866, 2967, 2560, 2608], aux []
+saved model
+Time 04h 03m 37s, episode reward 422.0, episode length 10001
+actions stats real [3996, 1465, 1612, 2928], aux []
+saved model
+Time 04h 05m 00s, episode reward 380.0, episode length 10001
+actions stats real [5131, 503, 1695, 2672], aux []
+saved model
+Time 04h 06m 25s, episode reward 283.0, episode length 10001
+actions stats real [9868, 20, 41, 72], aux []
+saved model
+Time 04h 07m 49s, episode reward 405.0, episode length 10001
+actions stats real [2912, 1981, 2328, 2780], aux []
+saved model
+Time 04h 09m 18s, episode reward 170.0, episode length 10001
+actions stats real [8853, 516, 283, 349], aux []
+saved model
+Time 04h 10m 50s, episode reward 215.0, episode length 10001
+actions stats real [9257, 191, 253, 300], aux []
+saved model
+Time 04h 11m 54s, episode reward 40.0, episode length 1148
+actions stats real [159, 791, 99, 99], aux []
+saved model
+Time 04h 13m 23s, episode reward 353.0, episode length 10001
+actions stats real [9089, 285, 211, 416], aux []
+saved model
+Time 04h 14m 29s, episode reward 411.0, episode length 1687
+actions stats real [578, 269, 404, 436], aux []
+saved model
+Time 04h 15m 40s, episode reward 428.0, episode length 3517
+actions stats real [227, 497, 1366, 1427], aux []
+saved model
+Time 04h 17m 12s, episode reward 405.0, episode length 10001
+actions stats real [956, 6311, 1260, 1474], aux []
+saved model
+Time 04h 18m 42s, episode reward 153.0, episode length 10001
+actions stats real [87, 132, 4856, 4926], aux []
+saved model
+Time 04h 20m 00s, episode reward 431.0, episode length 5453
+actions stats real [642, 2162, 1262, 1387], aux []
+saved model
+Time 04h 21m 30s, episode reward 413.0, episode length 10001
+actions stats real [2524, 4452, 1492, 1533], aux []
+saved model
+Time 04h 23m 00s, episode reward 386.0, episode length 10001
+actions stats real [9796, 23, 82, 100], aux []
+saved model
+Time 04h 24m 32s, episode reward 277.0, episode length 10001
+actions stats real [355, 13, 54, 9579], aux []
+saved model
+Time 04h 26m 04s, episode reward 352.0, episode length 10001
+actions stats real [9420, 253, 119, 209], aux []
+saved model
+Time 04h 27m 35s, episode reward 356.0, episode length 10001
+actions stats real [7595, 570, 891, 945], aux []
+saved model
+Time 04h 29m 05s, episode reward 345.0, episode length 10001
+actions stats real [9448, 14, 264, 275], aux []
+saved model
+Time 04h 30m 11s, episode reward 211.0, episode length 1739
+actions stats real [408, 764, 282, 285], aux []
+saved model
+Time 04h 31m 41s, episode reward 423.0, episode length 10001
+actions stats real [2254, 1064, 3338, 3345], aux []
+saved model
+Time 04h 32m 46s, episode reward 105.0, episode length 1282
+actions stats real [264, 153, 424, 441], aux []
+saved model
+Time 04h 34m 15s, episode reward 274.0, episode length 10001
+actions stats real [2964, 8, 3449, 3580], aux []
+saved model
+Time 04h 35m 46s, episode reward 346.0, episode length 10001
+actions stats real [9187, 185, 312, 317], aux []
+saved model
+Time 04h 36m 52s, episode reward 341.0, episode length 1860
+actions stats real [1075, 224, 283, 278], aux []
+saved model
+Time 04h 38m 22s, episode reward 357.0, episode length 10001
+actions stats real [1637, 372, 3993, 3999], aux []
+saved model
+Time 04h 39m 52s, episode reward 422.0, episode length 10001
+actions stats real [4956, 528, 2256, 2261], aux []
+saved model
+Time 04h 40m 58s, episode reward 329.0, episode length 2099
+actions stats real [117, 420, 770, 792], aux []
