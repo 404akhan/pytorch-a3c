@@ -9,6 +9,7 @@ import cv2
 from skimage.color import rgb2gray
 import matplotlib.pyplot as plt 
 
+
 # Taken from https://github.com/openai/universe-starter-agent
 def create_atari_env(env_id):
     env = gym.make(env_id)
@@ -26,10 +27,11 @@ def _process_frame42(frame):
     # we resize directly we lose pixels that, when mapped to 42x42,
     # aren't close enough to the pixel boundary.
     frame = cv2.resize(frame, (80, 80))
-    frame = frame.mean(2) # rgb2gray(frame)
+    frame = rgb2gray(frame)
     frame = frame.astype(np.float32)
     frame *= (1.0 / 255.0)
     frame = np.reshape(frame, [1, 80, 80])
+    
     return frame
 
 
