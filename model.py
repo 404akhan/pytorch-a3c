@@ -36,12 +36,16 @@ class ActorCritic(torch.nn.Module):
 
     def __init__(self, num_inputs, action_space, aux_actions):
         super(ActorCritic, self).__init__()
-        self.conv1 = nn.Conv2d(4, 32, 3, stride=2, padding=1)
-        self.conv2 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
-        self.conv3 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
-        self.conv4 = nn.Conv2d(32, 32, 3, stride=2, padding=1)
+        self.conv1 = nn.Conv2d(4, 32, 5, stride=1, padding=2)
+        self.maxp1 = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(32, 32, 5, stride=1, padding=1)
+        self.maxp2 = nn.MaxPool2d(2, 2)
+        self.conv3 = nn.Conv2d(32, 64, 4, stride=1, padding=1)
+        self.maxp3 = nn.MaxPool2d(2, 2)
+        self.conv4 = nn.Conv2d(64, 64, 3, stride=1, padding=1)
+        self.maxp4 = nn.MaxPool2d(2, 2)
 
-        self.fc = nn.Linear(32 * 3 * 3, 256)
+        self.fc = nn.Linear(1024, 256)
 
         num_outputs = action_space.n + aux_actions
         self.critic_linear = nn.Linear(256, 1)
@@ -61,12 +65,12 @@ class ActorCritic(torch.nn.Module):
 
     def forward(self, inputs):
         # TODO try all Relu
-        x = F.relu(self.conv1(inputs))
-        x = F.relu(self.conv2(x))
-        x = F.relu(self.conv3(x))
-        x = F.relu(self.conv4(x))
+        x = F.relu(self.maxp1(self.conv1(inputs)))
+        x = F.relu(self.maxp2(self.conv2(x)))
+        x = F.relu(self.maxp3(self.conv3(x)))
+        x = F.relu(self.maxp4(self.conv4(x)))
 
-        x = x.view(-1, 32 * 3 * 3)
+        x = x.view(-1, 1024)
         x = F.relu(self.fc(x))
 
         return self.critic_linear(x), self.actor_linear(x)

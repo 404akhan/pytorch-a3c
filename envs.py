@@ -26,11 +26,10 @@ def _process_frame42(frame):
     # we resize directly we lose pixels that, when mapped to 42x42,
     # aren't close enough to the pixel boundary.
     frame = cv2.resize(frame, (80, 80))
-    frame = cv2.resize(frame, (42, 42))
     frame = frame.mean(2) # rgb2gray(frame)
     frame = frame.astype(np.float32)
     frame *= (1.0 / 255.0)
-    frame = np.reshape(frame, [1, 42, 42])
+    frame = np.reshape(frame, [1, 80, 80])
     return frame
 
 
@@ -38,7 +37,7 @@ class AtariRescale42x42(vectorized.ObservationWrapper):
 
     def __init__(self, env=None):
         super(AtariRescale42x42, self).__init__(env)
-        self.observation_space = Box(0.0, 1.0, [1, 42, 42])
+        self.observation_space = Box(0.0, 1.0, [1, 80, 80])
 
     def _observation(self, observation_n):
         return [_process_frame42(observation) for observation in observation_n]
